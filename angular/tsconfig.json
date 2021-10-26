@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.prod.json",
+  "compilerOptions": {
+    "paths": {
+      "@easy-abp/forum": [
+        "projects/forum/src/public-api.ts"
+      ],
+      "@easy-abp/forum/config": [
+        "projects/forum/config/src/public-api.ts"
+      ],
+      "@proxy": ["projects/forum/src/lib/proxy/index.ts"],
+      "@proxy/*": ["projects/forum/src/lib/proxy/*"]
+    }
+  }
+}

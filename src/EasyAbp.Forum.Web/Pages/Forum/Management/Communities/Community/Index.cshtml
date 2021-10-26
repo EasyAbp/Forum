@@ -1,0 +1,48 @@
+@page
+@using EasyAbp.Forum.Permissions
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@using EasyAbp.Forum.Web.Pages.Forum.Management.Communities.Community
+@using EasyAbp.Forum.Localization
+@using EasyAbp.Forum.Web.Menus
+@model IndexModel
+@inject IPageLayout PageLayout
+@inject IHtmlLocalizer<ForumResource> L
+@inject IAuthorizationService Authorization
+@{
+    PageLayout.Content.Title = L["Community"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:Community"].Value);
+    PageLayout.Content.MenuItemName = ForumMenus.Community;
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/Forum/Management/Communities/Community/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/Forum/Management/Communities/Community/index.css"/>
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Community"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-right">
+			    @if (await Authorization.IsGrantedAsync(ForumPermissions.Community.Create))
+                {
+                <abp-button id="NewCommunityButton"
+                            text="@L["CreateCommunity"].Value"
+                            icon="plus"
+                            button-type="Primary" />
+                }
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="CommunityTable" class="nowrap"/>
+    </abp-card-body>
+</abp-card>
