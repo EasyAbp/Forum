@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\EasyAbp\Forum\images\stranded_pending.png" />
     <EmbeddedResource Include="Pages\**\*.css" />
     <EmbeddedResource Include="Pages\**\*.js" />
     <EmbeddedResource Include="Components\**\*.js" />

@@ -17,8 +17,8 @@ namespace EasyAbp.Forum.Posts
         public virtual async Task<string> CreateAsync(string contentText)
         {
             var outlineLength = await _settingProvider.GetAsync<int>(ForumSettings.Post.OutlineLength);
-            
-            return contentText.Substring(0, outlineLength);
+
+            return contentText.Substring(0, outlineLength) + "...";
         }
     }
 }

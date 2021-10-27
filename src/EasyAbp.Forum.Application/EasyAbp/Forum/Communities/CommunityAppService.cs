@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Forum.Permissions;
 using EasyAbp.Forum.Communities.Dtos;
@@ -7,7 +8,7 @@ using Volo.Abp.Application.Services;
 
 namespace EasyAbp.Forum.Communities
 {
-    public class CommunityAppService : CrudAppService<Community, CommunityDto, Guid, PagedAndSortedResultRequestDto, CreateUpdateCommunityDto, CreateUpdateCommunityDto>,
+    public class CommunityAppService : CrudAppService<Community, CommunityDto, Guid, GetCommunityListInput, CreateUpdateCommunityDto, CreateUpdateCommunityDto>,
         ICommunityAppService
     {
         protected override string GetPolicyName { get; set; } = null;
@@ -25,6 +26,11 @@ namespace EasyAbp.Forum.Communities
         {
             _communityManager = communityManager;
             _repository = repository;
+        }
+
+        protected override IQueryable<Community> ApplyDefaultSorting(IQueryable<Community> query)
+        {
+            return query.OrderBy(e => e.Id);
         }
 
         protected override async Task<Community> MapToEntityAsync(CreateUpdateCommunityDto createInput)
@@ -62,6 +68,15 @@ namespace EasyAbp.Forum.Communities
             await Repository.UpdateAsync(entity, autoSave: true);
 
             return await MapToGetOutputDtoAsync(entity);
+        }
+
+        public virtual async Task<CommunityDto> GetByNameAsync(string name)
+        {
+            await CheckGetPolicyAsync();
+
+            var community = await _repository.GetAsync(x => x.Name == name);
+
+            return await MapToGetOutputDtoAsync(community);
         }
     }
 }

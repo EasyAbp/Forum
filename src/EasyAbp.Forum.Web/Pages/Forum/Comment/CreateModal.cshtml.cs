@@ -2,9 +2,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EasyAbp.Forum.Comments;
 using EasyAbp.Forum.Comments.Dtos;
-using EasyAbp.Forum.Web.Pages.Forum.Comments.Comment.ViewModels;
+using EasyAbp.Forum.Web.Pages.Forum.Comment.ViewModels;
 
-namespace EasyAbp.Forum.Web.Pages.Forum.Comments.Comment
+namespace EasyAbp.Forum.Web.Pages.Forum.Comment
 {
     public class CreateModalModel : ForumPageModel
     {

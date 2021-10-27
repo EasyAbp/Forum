@@ -26,6 +26,7 @@ namespace EasyAbp.Forum.Permissions
             public const string Update = Default + ".Update";
             public const string Create = Default + ".Create";
             public const string Delete = Default + ".Delete";
+            public const string Pin = Default + ".Pin";
         }
 
         public class Comment

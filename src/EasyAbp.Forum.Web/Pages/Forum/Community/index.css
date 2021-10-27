@@ -1,0 +1,15 @@
+.post-title {
+    color: inherit;
+}
+.post-thumbnail {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.post-thumbnail-img {
+    transform: rotate(-30deg);
+}

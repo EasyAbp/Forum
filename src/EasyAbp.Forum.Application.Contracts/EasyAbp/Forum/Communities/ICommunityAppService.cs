@@ -1,5 +1,7 @@
 using System;
+using System.Threading.Tasks;
 using EasyAbp.Forum.Communities.Dtos;
+using JetBrains.Annotations;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
@@ -9,10 +11,10 @@ namespace EasyAbp.Forum.Communities
         ICrudAppService< 
             CommunityDto, 
             Guid, 
-            PagedAndSortedResultRequestDto,
+            GetCommunityListInput,
             CreateUpdateCommunityDto,
             CreateUpdateCommunityDto>
     {
-
+        Task<CommunityDto> GetByNameAsync([NotNull] string name);
     }
 }

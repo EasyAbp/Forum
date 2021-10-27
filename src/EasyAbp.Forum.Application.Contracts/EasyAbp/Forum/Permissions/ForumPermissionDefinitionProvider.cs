@@ -20,6 +20,7 @@ namespace EasyAbp.Forum.Permissions
             postPermission.AddChild(ForumPermissions.Post.Create, L("Permission:Create"));
             postPermission.AddChild(ForumPermissions.Post.Update, L("Permission:Update"));
             postPermission.AddChild(ForumPermissions.Post.Delete, L("Permission:Delete"));
+            postPermission.AddChild(ForumPermissions.Post.Pin, L("Permission:Pin"));
 
             var commentPermission = myGroup.AddPermission(ForumPermissions.Comment.Default, L("Permission:Comment"));
             commentPermission.AddChild(ForumPermissions.Comment.Manage, L("Permission:Manage"));

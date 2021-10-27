@@ -1,8 +1,6 @@
-using System;
-
 using System.ComponentModel.DataAnnotations;
 
-namespace EasyAbp.Forum.Web.Pages.Forum.Posts.Post.ViewModels
+namespace EasyAbp.Forum.Web.Pages.Forum.Post.ViewModels
 {
     public class EditPostViewModel
     {

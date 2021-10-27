@@ -49,9 +49,23 @@ namespace EasyAbp.Forum.Posts
 
         [HttpGet]
         [Route("")]
-        public virtual Task<PagedResultDto<PostDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        public virtual Task<PagedResultDto<PostDto>> GetListAsync(GetPostListInput input)
         {
             return _service.GetListAsync(input);
+        }
+
+        [HttpPost]
+        [Route("pin")]
+        public virtual Task PinAsync(Guid id)
+        {
+            return _service.PinAsync(id);
+        }
+
+        [HttpPost]
+        [Route("unpin")]
+        public virtual Task UnpinAsync(Guid id)
+        {
+            return _service.UnpinAsync(id);
         }
     }
 }

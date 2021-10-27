@@ -3,13 +3,13 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
 @inject IHtmlLocalizer<ForumResource> L
-@model EasyAbp.Forum.Web.Pages.Forum.Posts.Post.EditModalModel
+@model EasyAbp.Forum.Web.Pages.Forum.Comment.EditModalModel
 @{
     Layout = null;
 }
 <abp-dynamic-form abp-model="ViewModel" data-ajaxForm="true" asp-page="EditModal">
     <abp-modal>
-        <abp-modal-header title="@L["EditPost"].Value"></abp-modal-header>
+        <abp-modal-header title="@L["EditComment"].Value"></abp-modal-header>
         <abp-modal-body>
             <abp-input asp-for="Id" />
             <abp-form-content />

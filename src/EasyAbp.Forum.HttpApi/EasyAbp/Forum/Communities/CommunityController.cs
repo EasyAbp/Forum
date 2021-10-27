@@ -41,6 +41,13 @@ namespace EasyAbp.Forum.Communities
         }
 
         [HttpGet]
+        [Route("by-name/{name}")]
+        public Task<CommunityDto> GetByNameAsync(string name)
+        {
+            return _service.GetByNameAsync(name);
+        }
+
+        [HttpGet]
         [Route("{id}")]
         public virtual Task<CommunityDto> GetAsync(Guid id)
         {
@@ -49,7 +56,7 @@ namespace EasyAbp.Forum.Communities
 
         [HttpGet]
         [Route("")]
-        public virtual Task<PagedResultDto<CommunityDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        public virtual Task<PagedResultDto<CommunityDto>> GetListAsync(GetCommunityListInput input)
         {
             return _service.GetListAsync(input);
         }

@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using EasyAbp.Forum.Posts;
 using EasyAbp.Forum.Posts.Dtos;
-using EasyAbp.Forum.Web.Pages.Forum.Posts.Post.ViewModels;
+using EasyAbp.Forum.Web.Pages.Forum.Post.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
-namespace EasyAbp.Forum.Web.Pages.Forum.Posts.Post
+namespace EasyAbp.Forum.Web.Pages.Forum.Post
 {
     public class CreateModalModel : ForumPageModel
     {

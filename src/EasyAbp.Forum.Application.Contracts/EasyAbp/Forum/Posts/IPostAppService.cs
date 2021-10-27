@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using EasyAbp.Forum.Posts.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -9,10 +10,12 @@ namespace EasyAbp.Forum.Posts
         ICrudAppService< 
             PostDto, 
             Guid, 
-            PagedAndSortedResultRequestDto,
+            GetPostListInput,
             CreatePostDto,
             UpdatePostDto>
     {
-
+        Task PinAsync(Guid id);
+        
+        Task UnpinAsync(Guid id);
     }
 }

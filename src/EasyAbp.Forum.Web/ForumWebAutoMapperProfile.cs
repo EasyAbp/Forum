@@ -1,10 +1,10 @@
 using EasyAbp.Forum.Communities.Dtos;
 using EasyAbp.Forum.Web.Pages.Forum.Management.Communities.Community.ViewModels;
 using EasyAbp.Forum.Posts.Dtos;
-using EasyAbp.Forum.Web.Pages.Forum.Posts.Post.ViewModels;
+using EasyAbp.Forum.Web.Pages.Forum.Post.ViewModels;
 using EasyAbp.Forum.Comments.Dtos;
 using AutoMapper;
-using EasyAbp.Forum.Web.Pages.Forum.Comments.Comment.ViewModels;
+using EasyAbp.Forum.Web.Pages.Forum.Comment.ViewModels;
 using Volo.Abp.AutoMapper;
 
 namespace EasyAbp.Forum.Web

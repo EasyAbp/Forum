@@ -1,9 +1,8 @@
 using System;
-
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EasyAbp.Forum.Web.Pages.Forum.Posts.Post.ViewModels
+namespace EasyAbp.Forum.Web.Pages.Forum.Post.ViewModels
 {
     public class CreatePostViewModel
     {

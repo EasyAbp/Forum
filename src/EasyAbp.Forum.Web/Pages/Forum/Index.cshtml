@@ -1,9 +1,50 @@
-﻿@page
+﻿@page "~/Forum"
 @using Microsoft.Extensions.Localization
 @using EasyAbp.Forum.Localization
 @model EasyAbp.Forum.Web.Pages.Forum.IndexModel
 @inject IStringLocalizer<ForumResource> L
 @{
+  var colors = new List<string>
+  {
+    "#007bff", "#e83e8c", "#6f42c1"
+  };
 }
-<h1>Forum</h1>
-<p>@L["SamplePageMessage"]</p>
+
+@section styles
+{
+    <abp-style src="/Pages/Forum/index.css"/>
+}
+
+<div class="container">
+  <div class="my-3 p-3 bg-white rounded shadow-sm">
+    <h6 class="border-bottom border-gray pb-2 mb-0">@L["Community"]</h6>
+    @foreach (var (community, i) in Model.Communities.Select((community, i) => ( community, i )))
+    {
+      var color = colors[i % colors.Count];
+      <div class="media text-muted pt-3">
+        <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="@color"/></svg>
+
+        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+          <div class="d-flex justify-content-between align-items-center w-100">
+          <a class="community-display-name" href="~/Forum/Community/@community.Name"><strong class="text-gray-dark">@community.DisplayName</strong></a>
+            <a href="#">@L["JoinCommunity"]</a>
+          </div>
+          <span class="d-block">@community.Description</span>
+        </div>
+      </div>
+    }
+  </div>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>

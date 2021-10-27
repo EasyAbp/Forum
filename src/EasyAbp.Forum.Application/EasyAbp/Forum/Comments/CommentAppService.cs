@@ -52,7 +52,7 @@ namespace EasyAbp.Forum.Comments
             {
                 var parent = await _repository.GetAsync(input.ParentId.Value);
 
-                if (parent.PostId != post.Id)
+                if (parent.PostId != post.Id || parent.ParentId.HasValue)
                 {
                     throw new AbpValidationException();
                 }

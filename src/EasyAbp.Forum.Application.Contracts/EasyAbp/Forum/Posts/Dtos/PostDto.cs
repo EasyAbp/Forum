@@ -12,6 +12,10 @@ namespace EasyAbp.Forum.Posts.Dtos
 
         public string Outline { get; set; }
 
+        public string Thumbnail { get; set; }
+        
         public PostContentDto Content { get; set; }
+
+        public bool Pinned { get; set; }
     }
 }

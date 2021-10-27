@@ -16,9 +16,14 @@ namespace EasyAbp.Forum.Posts
         
         [CanBeNull]
         public virtual string Outline { get; protected set; }
-
+        
+        [CanBeNull]
+        public virtual string Thumbnail { get; protected set; }
+        
         public virtual PostContent Content { get; protected set; }
 
+        public virtual bool Pinned { get; protected set; }
+        
         protected Post()
         {
         }
@@ -29,22 +34,27 @@ namespace EasyAbp.Forum.Posts
             Guid communityId,
             [NotNull] string title,
             [CanBeNull] string outline,
-            [CanBeNull] string contentText
-        ) : base(id)
+            [CanBeNull] string thumbnail,
+            [CanBeNull] string contentText,
+            bool pinned) : base(id)
         {
             TenantId = tenantId;
             CommunityId = communityId;
-            
-            Update(title, outline, contentText);
+            Thumbnail = thumbnail;
+            Pinned = pinned;
+
+            Update(title, outline, thumbnail, contentText);
         }
 
         public void Update(
             [NotNull] string title,
             [CanBeNull] string outline,
+            [CanBeNull] string thumbnail,
             [CanBeNull] string contentText)
         {
             Title = title;
             Outline = outline;
+            Thumbnail = thumbnail;
             
             if (Content == null)
             {
@@ -54,6 +64,11 @@ namespace EasyAbp.Forum.Posts
             {
                 Content.Update(contentText);
             }
+        }
+
+        public void SetPinned(bool pinned)
+        {
+            Pinned = pinned;
         }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace EasyAbp.Forum.Web.Pages.Forum.Comments.Comment.ViewModels
+namespace EasyAbp.Forum.Web.Pages.Forum.Comment.ViewModels
 {
     public class CreateCommentViewModel
     {
