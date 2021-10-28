@@ -49,7 +49,7 @@ namespace EasyAbp.Forum.Comments
 
         [HttpGet]
         [Route("")]
-        public virtual Task<PagedResultDto<CommentDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        public virtual Task<PagedResultDto<CommentDto>> GetListAsync(GetCommentListInput input)
         {
             return _service.GetListAsync(input);
         }

@@ -18,6 +18,10 @@
 <div class="container">
   <div class="my-3 p-3 bg-white rounded shadow-sm">
     <h6 class="border-bottom border-gray pb-2 mb-0">@L["Community"]</h6>
+    @if (!Model.Communities.Any())
+    {
+      <p class="mt-3 text-center text-secondary">@L["NoCommunities"]</p>
+    }
     @foreach (var (community, i) in Model.Communities.Select((community, i) => ( community, i )))
     {
       var color = colors[i % colors.Count];
@@ -26,7 +30,7 @@
 
         <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
           <div class="d-flex justify-content-between align-items-center w-100">
-          <a class="community-display-name" href="~/Forum/Community/@community.Name"><strong class="text-gray-dark">@community.DisplayName</strong></a>
+            <a class="community-display-name" href="~/Forum/Community/@community.Name"><strong class="text-gray-dark">@community.DisplayName</strong></a>
             <a href="#">@L["JoinCommunity"]</a>
           </div>
           <span class="d-block">@community.Description</span>
@@ -34,17 +38,7 @@
       </div>
     }
   </div>
-  <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-end">
-      <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#">Next</a>
-      </li>
-    </ul>
-  </nav>
+  
+  <abp-paginator model="Model.PagerModel" show-info="true"></abp-paginator>
+  
 </div>

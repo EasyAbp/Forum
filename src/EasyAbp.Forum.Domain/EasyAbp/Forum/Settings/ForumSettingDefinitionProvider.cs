@@ -14,7 +14,7 @@ namespace EasyAbp.Forum.Settings
             
             context.Add(new SettingDefinition(
                 ForumSettings.Post.OutlineLength,
-                "100",
+                "600",
                 L($"Setting:{ForumSettings.Post.OutlineLength}"),
                 isVisibleToClients: true));
         }

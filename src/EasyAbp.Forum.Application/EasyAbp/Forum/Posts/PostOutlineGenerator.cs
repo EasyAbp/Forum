@@ -18,7 +18,9 @@ namespace EasyAbp.Forum.Posts
         {
             var outlineLength = await _settingProvider.GetAsync<int>(ForumSettings.Post.OutlineLength);
 
-            return contentText.Substring(0, outlineLength) + "...";
+            var length = contentText.Length > outlineLength ? outlineLength : contentText.Length;
+            
+            return contentText.Substring(0, length) + "...";
         }
     }
 }

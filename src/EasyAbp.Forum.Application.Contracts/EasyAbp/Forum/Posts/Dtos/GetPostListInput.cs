@@ -7,6 +7,8 @@ namespace EasyAbp.Forum.Posts.Dtos
     [Serializable]
     public class GetPostListInput : PagedAndSortedResultRequestDto, IHasExtraProperties
     {
+        public Guid? CommunityId { get; set; }
+        
         public bool PinnedOnly { get; set; }
         
         public ExtraPropertyDictionary ExtraProperties { get; set; }

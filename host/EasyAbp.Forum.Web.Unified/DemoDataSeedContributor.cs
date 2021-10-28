@@ -18,6 +18,7 @@ namespace EasyAbp.Forum
         private readonly IGuidGenerator _guidGenerator;
         private readonly ICommunityRepository _communityRepository;
         private readonly IPostRepository _postRepository;
+        private readonly IPostOutlineGenerator _postOutlineGenerator;
         private readonly ICommentRepository _commentRepository;
 
         public DemoDataSeedContributor(
@@ -25,12 +26,14 @@ namespace EasyAbp.Forum
             IGuidGenerator guidGenerator,
             ICommunityRepository communityRepository,
             IPostRepository postRepository,
+            IPostOutlineGenerator postOutlineGenerator,
             ICommentRepository commentRepository)
         {
             _currentTenant = currentTenant;
             _guidGenerator = guidGenerator;
             _communityRepository = communityRepository;
             _postRepository = postRepository;
+            _postOutlineGenerator = postOutlineGenerator;
             _commentRepository = commentRepository;
         }
         
@@ -80,7 +83,7 @@ namespace EasyAbp.Forum
             await TryCreatePostAsync(
                 community.Id,
                 "My first post",
-                "(I have demo comments) This is my first post.",
+                "(I have demo comments) We are excited to announce that the alpha version of the LeptonX theme has been released! As stated in this blog post, LeptonX comes in different shapes. For this release, we introduce only ABP based projects with the Angular UI. So, if you are already using the ABP Framework and Angular as the frontend choice, you can integrate these packages into your project today. The theme has been deployed with two versions: LeptonX-lite (free) and LeptonX (commercial). Note that this theme currently only works for the Angular UI. Please keep waiting for other UI options.",
                 true);
             
             await TryCreatePostAsync(
@@ -122,8 +125,8 @@ namespace EasyAbp.Forum
             }
 
             await _postRepository.InsertAsync(
-                new Post(_guidGenerator.Create(), _currentTenant.Id, communityId, title, contentText, null, contentText,
-                    pinned), true);
+                new Post(_guidGenerator.Create(), _currentTenant.Id, communityId, title,
+                    await _postOutlineGenerator.CreateAsync(contentText), null, contentText, pinned), true);
         }
         
         private async Task SeedDemoCommentsAsync()
@@ -133,7 +136,7 @@ namespace EasyAbp.Forum
             var firstComment = await TryCreateCommentAsync(
                 post.Id,
                 null,
-                "This is my first comment.");
+                "This is my first comment. In this blog post, I've explained how to use the alpha version of the new LeptonX theme for ABP-based solutions. Please, keep in mind that this is an alpha version, and we will continue to work on the LeptonX theme. The APIs are bound to change and breaking changes may be introduced in future versions. We would like you to try it out with the latest version of the ABP Framework and give us feedback at lepton@volosoft.com or open an issue on this repository: https://github.com/volosoft/lepton-theme");
             
             await TryCreateCommentAsync(
                 post.Id,

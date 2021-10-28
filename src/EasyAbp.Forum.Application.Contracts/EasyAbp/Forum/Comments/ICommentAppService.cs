@@ -9,7 +9,7 @@ namespace EasyAbp.Forum.Comments
         ICrudAppService< 
             CommentDto, 
             Guid, 
-            PagedAndSortedResultRequestDto,
+            GetCommentListInput,
             CreateCommentDto,
             UpdateCommentDto>
     {

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Forum.Permissions;
 using EasyAbp.Forum.Comments.Dtos;
@@ -9,7 +10,7 @@ using Volo.Abp.Validation;
 
 namespace EasyAbp.Forum.Comments
 {
-    public class CommentAppService : CrudAppService<Comment, CommentDto, Guid, PagedAndSortedResultRequestDto, CreateCommentDto, UpdateCommentDto>,
+    public class CommentAppService : CrudAppService<Comment, CommentDto, Guid, GetCommentListInput, CreateCommentDto, UpdateCommentDto>,
         ICommentAppService
     {
         protected override string GetPolicyName { get; set; } = null;
@@ -27,6 +28,17 @@ namespace EasyAbp.Forum.Comments
         {
             _postRepository = postRepository;
             _repository = repository;
+        }
+
+        protected override async Task<IQueryable<Comment>> CreateFilteredQueryAsync(GetCommentListInput input)
+        {
+            return (await base.CreateFilteredQueryAsync(input))
+                .WhereIf(input.PostId.HasValue, x => x.PostId == input.PostId.Value);
+        }
+
+        protected override IQueryable<Comment> ApplyDefaultSorting(IQueryable<Comment> query)
+        {
+            return query.OrderBy(e => e.Id);
         }
 
         protected override Task<Comment> MapToEntityAsync(CreateCommentDto createInput)

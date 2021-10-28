@@ -35,6 +35,7 @@ namespace EasyAbp.Forum.Posts
         protected override async Task<IQueryable<Post>> CreateFilteredQueryAsync(GetPostListInput input)
         {
             return (await base.CreateFilteredQueryAsync(input))
+                .WhereIf(input.CommunityId.HasValue, x => x.CommunityId == input.CommunityId.Value)
                 .WhereIf(input.PinnedOnly, x => x.Pinned);
         }
 
