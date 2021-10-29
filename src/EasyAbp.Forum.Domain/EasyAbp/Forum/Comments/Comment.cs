@@ -15,6 +15,8 @@ namespace EasyAbp.Forum.Comments
         
         [NotNull]
         public virtual string Text { get; protected set; }
+        
+        public virtual int ChildrenCount { get; protected set; }
 
         protected Comment()
         {
@@ -38,6 +40,11 @@ namespace EasyAbp.Forum.Comments
         public void Update([NotNull] string text)
         {
             Text = text;
+        }
+
+        public void SetChildrenCount(int childrenCount)
+        {
+            ChildrenCount = childrenCount;
         }
     }
 }

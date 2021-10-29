@@ -140,12 +140,12 @@ namespace EasyAbp.Forum
             
             await TryCreateCommentAsync(
                 post.Id,
-                firstComment.ParentId,
+                firstComment.Id,
                 "This is a sub-comment.");
             
             await TryCreateCommentAsync(
                 post.Id,
-                firstComment.ParentId,
+                firstComment.Id,
                 "This is another sub-comment.");
             
             await TryCreateCommentAsync(

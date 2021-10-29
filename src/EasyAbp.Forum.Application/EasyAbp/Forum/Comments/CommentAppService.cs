@@ -33,7 +33,8 @@ namespace EasyAbp.Forum.Comments
         protected override async Task<IQueryable<Comment>> CreateFilteredQueryAsync(GetCommentListInput input)
         {
             return (await base.CreateFilteredQueryAsync(input))
-                .WhereIf(input.PostId.HasValue, x => x.PostId == input.PostId.Value);
+                .WhereIf(input.PostId.HasValue, x => x.PostId == input.PostId.Value)
+                .Where(x => x.ParentId == input.ParentId);
         }
 
         protected override IQueryable<Comment> ApplyDefaultSorting(IQueryable<Comment> query)

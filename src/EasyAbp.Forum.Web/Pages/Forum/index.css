@@ -1,3 +1,7 @@
 .community-display-name {
     color: inherit;
 }
+
+.community:last-child .media-body {
+    border: none !important;
+}

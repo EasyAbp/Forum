@@ -11,5 +11,7 @@ namespace EasyAbp.Forum.Comments.Dtos
         public Guid PostId { get; set; }
 
         public string Text { get; set; }
+        
+        public int ChildrenCount { get; set; }
     }
 }

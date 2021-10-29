@@ -13,3 +13,7 @@
 .post-thumbnail-img {
     transform: rotate(-30deg);
 }
+
+.post:last-child .media-body {
+    border: none !important;
+}

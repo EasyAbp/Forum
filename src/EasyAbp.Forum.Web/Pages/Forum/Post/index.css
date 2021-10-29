@@ -1,0 +1,7 @@
+.comment:last-child .media-body {
+    border: none !important;
+}
+
+.sub-comment:last-child .media-body {
+    border: none !important;
+}

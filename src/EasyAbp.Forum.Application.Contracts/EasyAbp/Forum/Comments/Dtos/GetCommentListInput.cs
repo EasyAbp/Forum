@@ -9,6 +9,8 @@ namespace EasyAbp.Forum.Comments.Dtos
     {
         public Guid? PostId { get; set; }
         
+        public Guid? ParentId { get; set; }
+        
         public ExtraPropertyDictionary ExtraProperties { get; set; }
     }
 }

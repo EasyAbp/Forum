@@ -15,6 +15,7 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Post
     public class IndexModel : ForumPageModel
     {
         public static int PageSize = 15;
+        public static int SubCommentPageSize = 10;
         
         public PagerModel PagerModel { get; set; }
 
@@ -26,6 +27,8 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Post
         public PostDto Post { get; set; }
 
         public IReadOnlyList<CommentDto> Comments { get; set; } = new List<CommentDto>();
+        
+        public Dictionary<CommentDto, IReadOnlyList<CommentDto>> FirstPageSubComments { get; set; } = new();
         
         public virtual async Task<IActionResult> OnGetAsync(Guid id)
         {
@@ -53,6 +56,22 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Post
 
             PagerModel = new PagerModel(commentsResult.TotalCount, commentsResult.Items.Count, CurrentPage, PageSize,
                 Request.Path.ToString());
+
+            foreach (var comment in Comments)
+            {
+                if (comment.ChildrenCount == 0)
+                {
+                    FirstPageSubComments[comment] = new List<CommentDto>();
+                }
+                else
+                {
+                    FirstPageSubComments[comment] = (await commentAppService.GetListAsync(new GetCommentListInput
+                    {
+                        ParentId = comment.Id,
+                        MaxResultCount = SubCommentPageSize
+                    })).Items;
+                }
+            }
 
             var communityAppService = LazyServiceProvider.LazyGetRequiredService<ICommunityAppService>();
 
