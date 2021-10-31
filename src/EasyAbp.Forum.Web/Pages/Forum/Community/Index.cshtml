@@ -1,8 +1,11 @@
 ﻿@page "~/Forum/Community/{name}"
 @using Microsoft.Extensions.Localization
 @using EasyAbp.Forum.Localization
+@using EasyAbp.Forum.Permissions
+@using Microsoft.AspNetCore.Authorization
 @model EasyAbp.Forum.Web.Pages.Forum.Community.IndexModel
-@inject IStringLocalizer<ForumResource> L
+@inject IStringLocalizer<ForumResource> _l
+@inject IAuthorizationService _authorization
 @{
   var colors = new List<string>
   {
@@ -10,10 +13,19 @@
   };
 }
 
+@section scripts
+{
+    <abp-script src="/Pages/Forum/Community/index.js"/>
+}
+
 @section styles
 {
     <abp-style src="/Pages/Forum/Community/index.css"/>
 }
+
+<script>
+  let communityId = "@Model.Community.Id";
+</script>
 
 <div class="container">
   @if (Model.PinnedPosts.Any())
@@ -32,11 +44,11 @@
       <div class="pinned-post col-md-6">
         <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 h-100 shadow-sm position-relative">
           <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-primary">@L["PinnedPost"]</strong>
+            <strong class="d-inline-block mb-2 text-primary">@_l["PinnedPost"]</strong>
             <h3 class="mb-0">@post.Title</h3>
-            <div class="mb-1 text-muted">@L.GetString("PostedBy", post.CreatorId?.ToString() ?? L["Anonymous"]) <time class="timeago" datetime="@post.CreationTime">@post.CreationTime</time></div>
+            <div class="mb-1 text-muted">@_l.GetString("PostedBy", post.CreatorId?.ToString() ?? _l["Anonymous"]) <time class="timeago" datetime="@post.CreationTime">@post.CreationTime</time></div>
             <p class="card-text mb-auto">@(post.Outline[..(post.Outline.Length < 100 ? post.Outline.Length : 100)] + "...")</p>
-            <a href="~/Forum/Post/@post.Id" class="stretched-link">Continue reading</a>
+            <a asp-page="/Forum/Post" asp-all-route-data="@(new Dictionary<string, string> {{"id", post.Id.ToString()}})" class="stretched-link">Continue reading</a>
           </div>
           <div class="col-auto d-none d-lg-block">
             <svg class="post-thumbnail" width="200" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -48,6 +60,18 @@
       </div>
     }
   </div>
+  <div class="post-nav my-3 p-3 bg-white rounded shadow-sm d-flex justify-content-between">
+    @if (await _authorization.IsGrantedAsync(ForumPermissions.Post.Create))
+    {
+      <div class="post-filter">
+        <abp-button class="text-primary" button-type="Link" icon="certificate" text="@_l["NewPosts"].Value" />
+        <abp-button class="text-secondary" button-type="Link" icon="fire" text="@_l["HotPosts"].Value" />
+      </div>
+      <div class="create-post">
+        <abp-button id="CreatePostButton" button-type="Primary" icon="plus" size="Small" text="@_l["CreatePost"].Value" />
+      </div>
+    }
+  </div>
 </div>
 
 <div class="container">
@@ -55,7 +79,7 @@
     <h6 class="border-bottom border-gray pb-2 mb-0">@Model.Community.DisplayName</h6>
     @if (!Model.Posts.Any())
     {
-      <p class="mt-3 text-center text-secondary">@L["NoPosts"]</p>
+      <p class="mt-3 text-center text-secondary">@_l["NoPosts"]</p>
     }
     @foreach (var (post, i) in Model.Posts.Select((post, i) => ( post, i )))
     {
@@ -65,7 +89,7 @@
 
         <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
           <div class="w-100 mb-1">
-            @L.GetString("PostedBy", post.CreatorId?.ToString() ?? L["Anonymous"])
+            @_l.GetString("PostedBy", post.CreatorId?.ToString() ?? _l["Anonymous"])
             <time class="timeago" datetime="@post.CreationTime">@post.CreationTime</time>
           </div>
           <div class="d-flex justify-content-between align-items-center w-100">

@@ -1,5 +1,4 @@
 ﻿@page "~/Forum/Post/{id}"
-@using System.Net
 @using Microsoft.Extensions.Localization
 @using EasyAbp.Forum.Localization
 @using EasyAbp.Forum.Permissions
@@ -38,7 +37,7 @@
                   <textarea asp-for="CreateCommentText" class="form-control" placeholder="@_l["CreateCommentTextPlaceholder"]" rows="3"></textarea>
                   <span asp-validation-for="CreateCommentText" class="text-danger"></span>
                   <div class="mt-3 d-flex flex-row-reverse">
-                    <abp-button button-type="Primary" size="Small" type="submit">@_l["Submit"]</abp-button>
+                    <abp-button button-type="Primary" size="Small" text="@_l["Submit"].Value" type="submit" />
                   </div>
                 </form>
               </div>

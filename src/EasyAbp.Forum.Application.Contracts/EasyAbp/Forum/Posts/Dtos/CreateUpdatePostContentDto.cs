@@ -5,7 +5,6 @@ namespace EasyAbp.Forum.Posts.Dtos
 {
     public class CreateUpdatePostContentDto
     {
-        [Required]
         [DynamicStringLength(
             typeof(ForumConsts.Post),
             nameof(ForumConsts.Post.ContentTextMaxLength),

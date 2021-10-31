@@ -1,7 +1,7 @@
+using System;
 using System.Threading.Tasks;
 using EasyAbp.Forum.Posts;
 using EasyAbp.Forum.Posts.Dtos;
-using EasyAbp.Forum.Web.Pages.Forum.Post.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using CreatePostViewModel = EasyAbp.Forum.Web.Pages.Forum.Post.ViewModels.CreatePostViewModel;
 
@@ -17,6 +17,16 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Post
         public CreateModalModel(IPostAppService service)
         {
             _service = service;
+        }
+
+        public virtual Task OnGetAsync(Guid communityId)
+        {
+            ViewModel = new CreatePostViewModel
+            {
+                CommunityId = communityId
+            };
+            
+            return Task.CompletedTask;
         }
 
         public virtual async Task<IActionResult> OnPostAsync()
