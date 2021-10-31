@@ -26,7 +26,7 @@
       <div class="col">
         <div class="row no-gutters border rounded overflow-hidden flex-md-row shadow-sm h-md-250 position-relative">
           <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-primary">@Model.Community.DisplayName</strong>
+            <a asp-page="/Forum/Community/Index" asp-all-route-data="@(new Dictionary<string, string>{{"name", Model.Community.Name}})"><strong class="d-inline-block mb-2 text-primary">@Model.Community.DisplayName</strong></a>
             <h3 class="mb-0">@Model.Post.Title</h3>
             <div class="mt-2 mb-4 text-muted">@_l.GetString("PostedBy", Model.Post.CreatorId?.ToString() ?? _l["Anonymous"]) <time class="timeago" datetime="@Model.Post.CreationTime">@Model.Post.CreationTime</time></div>
             <p class="card-text mb-auto">@Model.Post.Content.Text</p>
