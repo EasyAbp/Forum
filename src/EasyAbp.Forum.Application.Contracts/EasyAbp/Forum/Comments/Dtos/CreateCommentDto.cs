@@ -8,17 +8,17 @@ using Volo.Abp.Validation;
 namespace EasyAbp.Forum.Comments.Dtos
 {
     [Serializable]
-    public class CreateCommentDto : ExtensibleObject
+    public class CreateCommentDto
     {
         public Guid? ParentId { get; set; }
 
         public Guid PostId { get; set; }
 
-        [DynamicRange(
-            typeof(ForumConsts),
-            typeof(int),
-            nameof(ForumConsts.Comment.TextMinLength),
-            nameof(ForumConsts.Comment.TextMaxLength)
+        [Required]
+        [DynamicStringLength(
+            typeof(ForumConsts.Comment),
+            nameof(ForumConsts.Comment.TextMaxLength),
+            nameof(ForumConsts.Comment.TextMinLength)
         )]
         public string Text { get; set; }
     }

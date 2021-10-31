@@ -9,20 +9,20 @@
         
         public static class Post
         {
-            public static int TitleMinLength = 4;
+            public static int TitleMinLength { get; set; } = 4;
             
-            public static int TitleMaxLength = 100;
+            public static int TitleMaxLength { get; set; } = 100;
             
-            public static int ContentTextMinLength = 0;
+            public static int ContentTextMinLength { get; set; } = 0;
             
-            public static int ContentTextMaxLength = 20000;
+            public static int ContentTextMaxLength { get; set; } = 20000;
         }
         
         public static class Comment
         {
-            public static int TextMinLength = 4;
+            public static int TextMinLength { get; set; } = 4;
             
-            public static int TextMaxLength = 20000;
+            public static int TextMaxLength { get; set; } = 20000;
         }
     }
 }

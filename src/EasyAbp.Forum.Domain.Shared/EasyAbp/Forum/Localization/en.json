@@ -46,6 +46,8 @@
     "EditComment": "EditComment",
     "CommentDeletionConfirmationMessage": "Are you sure to delete the comment {0}?",
     "NoComments": "No comments.",
+    "CreateCommentTextPlaceholder": "What are your thoughts?",
+    "CommentAs": "Comment as {0}",
     "Menu:PostContent": "MenuPostContent",
     "PostContentPostId": "PostContentPostId",
     "PostContentText": "PostContentText",

@@ -3,6 +3,7 @@ using EasyAbp.Forum.Posts;
 using EasyAbp.Forum.Posts.Dtos;
 using EasyAbp.Forum.Web.Pages.Forum.Post.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using CreatePostViewModel = EasyAbp.Forum.Web.Pages.Forum.Post.ViewModels.CreatePostViewModel;
 
 namespace EasyAbp.Forum.Web.Pages.Forum.Post
 {
