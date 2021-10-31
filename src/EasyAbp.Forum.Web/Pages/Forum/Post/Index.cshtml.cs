@@ -7,18 +7,20 @@ using EasyAbp.Forum.Comments;
 using EasyAbp.Forum.Comments.Dtos;
 using EasyAbp.Forum.Communities;
 using EasyAbp.Forum.Communities.Dtos;
+using EasyAbp.Forum.Permissions;
 using EasyAbp.Forum.Posts;
 using EasyAbp.Forum.Posts.Dtos;
-using EasyAbp.Forum.Web.Pages.Forum.Post.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Pagination;
+using Volo.Abp.Users;
 using Volo.Abp.Validation;
 
 namespace EasyAbp.Forum.Web.Pages.Forum.Post
 {
     public class IndexModel : ForumPageModel
     {
+        private readonly IAuthorizationService _authorizationService;
         private readonly ICommentAppService _commentAppService;
         public static int PageSize = 15;
         public static int SubCommentPageSize = 10;
@@ -51,8 +53,11 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Post
         
         public Dictionary<CommentDto, IReadOnlyList<CommentDto>> FirstPageSubComments { get; set; } = new();
 
-        public IndexModel(ICommentAppService commentAppService)
+        public IndexModel(
+            IAuthorizationService authorizationService,
+            ICommentAppService commentAppService)
         {
+            _authorizationService = authorizationService;
             _commentAppService = commentAppService;
         }
         
@@ -120,6 +125,39 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Post
             });
 
             return RedirectToPage("/Forum/Post/Index", new {pinnedCommentId = newComment.Id});
+        }
+        
+        public virtual async Task<bool> CanEditPostAsync()
+        {
+            return await _authorizationService.IsGrantedAsync(ForumPermissions.Post.Update) &&
+                   (Post.CreatorId == CurrentUser.GetId() ||
+                    await _authorizationService.IsGrantedAsync(ForumPermissions.Post.Manage));
+        }
+        
+        public virtual async Task<bool> CanDeletePostAsync()
+        {
+            return await _authorizationService.IsGrantedAsync(ForumPermissions.Post.Delete) &&
+                   (Post.CreatorId == CurrentUser.GetId() ||
+                    await _authorizationService.IsGrantedAsync(ForumPermissions.Post.Manage));
+        }
+
+        public virtual async Task<bool> CanCreateCommentAsync()
+        {
+            return await _authorizationService.IsGrantedAsync(ForumPermissions.Comment.Create);
+        }
+        
+        public virtual async Task<bool> CanEditCommentAsync(CommentDto comment)
+        {
+            return await _authorizationService.IsGrantedAsync(ForumPermissions.Comment.Update) &&
+                   (comment.CreatorId == CurrentUser.GetId() ||
+                    await _authorizationService.IsGrantedAsync(ForumPermissions.Comment.Manage));
+        }
+        
+        public virtual async Task<bool> CanDeleteCommentAsync(CommentDto comment)
+        {
+            return await _authorizationService.IsGrantedAsync(ForumPermissions.Comment.Delete) &&
+                   (comment.CreatorId == CurrentUser.GetId() ||
+                    await _authorizationService.IsGrantedAsync(ForumPermissions.Comment.Manage));
         }
     }
 }

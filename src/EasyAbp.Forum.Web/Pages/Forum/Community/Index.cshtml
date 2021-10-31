@@ -61,16 +61,16 @@
     }
   </div>
   <div class="post-nav my-3 p-3 bg-white rounded shadow-sm d-flex justify-content-between">
-    @if (await _authorization.IsGrantedAsync(ForumPermissions.Post.Create))
-    {
-      <div class="post-filter">
-        <abp-button class="text-primary" button-type="Link" icon="certificate" text="@_l["NewPosts"].Value" />
-        <abp-button class="text-secondary" button-type="Link" icon="fire" text="@_l["HotPosts"].Value" />
-      </div>
-      <div class="create-post">
-        <abp-button id="CreatePostButton" button-type="Primary" icon="plus" size="Small" text="@_l["CreatePost"].Value" />
-      </div>
-    }
+    <div class="post-filter">
+      <abp-button class="text-primary" button-type="Link" icon="certificate" text="@_l["NewPosts"].Value" />
+      <abp-button class="text-secondary" button-type="Link" icon="fire" text="@_l["HotPosts"].Value" />
+    </div>
+      @if (await Model.CanCreatePostAsync())
+      {
+        <div class="create-post">
+          <abp-button id="CreatePostButton" button-type="Primary" icon="plus" size="Small" text="@_l["CreatePost"].Value"/>
+        </div>
+      }
   </div>
 </div>
 

@@ -1,11 +1,8 @@
 ﻿@page "~/Forum/Post/{id}"
 @using Microsoft.Extensions.Localization
 @using EasyAbp.Forum.Localization
-@using EasyAbp.Forum.Permissions
-@using Microsoft.AspNetCore.Authorization
 @model EasyAbp.Forum.Web.Pages.Forum.Post.IndexModel
 @inject IStringLocalizer<ForumResource> _l
-@inject IAuthorizationService _authorization
 @{
   var colors = new List<string>
   {
@@ -27,9 +24,25 @@
           <div class="col p-4 d-flex flex-column position-static">
             <a asp-page="/Forum/Community/Index" asp-all-route-data="@(new Dictionary<string, string>{{"name", Model.Community.Name}})"><strong class="d-inline-block mb-2 text-primary">@Model.Community.DisplayName</strong></a>
             <h3 class="mb-0">@Model.Post.Title</h3>
-            <div class="mt-2 mb-4 text-muted">@_l.GetString("PostedBy", Model.Post.CreatorId?.ToString() ?? _l["Anonymous"]) <time class="timeago" datetime="@Model.Post.CreationTime">@Model.Post.CreationTime</time></div>
-            <p class="card-text mb-auto">@Model.Post.Content.Text</p>
-            @if (await _authorization.IsGrantedAsync(ForumPermissions.Comment.Create))
+            <div class="mt-2 mb-4 text-muted">
+              @_l.GetString("PostedBy", Model.Post.CreatorId?.ToString() ?? _l["Anonymous"]) <time class="timeago" datetime="@Model.Post.CreationTime">@Model.Post.CreationTime</time>
+            </div>
+            <div class="card-text mb-auto">@Model.Post.Content.Text</div>
+            <div class="post-action mt-2 d-flex justify-content-between">
+              <div class="post-action-left">
+                <abp-button class="text-secondary" button-type="Link" size="Small" icon="commenting" text="@_l.GetString("PostCommentCount", Model.PagerModel.TotalItemsCount).Value" />
+                <abp-button class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value"/>
+                @if (await Model.CanEditPostAsync())
+                {
+                  <abp-button class="text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
+                }
+                @if (await Model.CanDeletePostAsync())
+                {
+                  <abp-button class="text-secondary" button-type="Link" size="Small" icon="trash" text="@_l["Delete"].Value"/>
+                }
+              </div>
+            </div>
+            @if (await Model.CanCreateCommentAsync())
             {
               <div class="create-comment border-top mt-3 pt-2">
                 <form asp-page="/Forum/Post/Index">
@@ -61,24 +74,57 @@
       <div class="comment media text-muted pt-3">
         <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="@color"/></svg>
 
-        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
           <div class="d-flex justify-content-between align-items-center w-100 mb-1">
             <strong class="text-gray-dark">@(comment.CreatorId?.ToString() ?? _l["Anonymous"])</strong>
             <time class="timeago" datetime="@comment.CreationTime">@comment.CreationTime</time>
           </div>
-          <span class="d-block text-body">@comment.Text</span>
+          <div class="d-block text-body">@comment.Text</div>
+          <div class="comment-action mt-1 d-flex justify-content-between">
+            <div class="comment-action-left">
+              @if (await Model.CanCreateCommentAsync())
+              {
+                <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="reply" text="@_l["Reply"].Value"/>
+              }
+              <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value"/>
+              @if (await Model.CanEditCommentAsync(comment))
+              {
+                <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
+              }
+              @if (await Model.CanDeleteCommentAsync(comment))
+              {
+                <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="trash" text="@_l["Delete"].Value"/>
+              }
+            </div>
+          </div>
           <div class="sub-comments">
             @foreach (var subComment in Model.FirstPageSubComments[comment])
             {
               <div class="sub-comment media text-muted pt-3">
                 <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="@color"/></svg>
-
-                <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
                   <div class="d-flex justify-content-between align-items-center w-100 mb-1">
                     <strong class="text-gray-dark">@(subComment.CreatorId?.ToString() ?? _l["Anonymous"])</strong>
                     <time class="timeago" datetime="@subComment.CreationTime">@comment.CreationTime</time>
                   </div>
                   <span class="d-block text-body">@subComment.Text</span>
+                  <div class="sub-comment-action mt-1 d-flex justify-content-between">
+                    <div class="sub-comment-action-left">
+                      @if (await Model.CanCreateCommentAsync())
+                      {
+                        <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="reply" text="@_l["Reply"].Value"/>
+                      }
+                      <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value"/>
+                      @if (await Model.CanEditCommentAsync(comment))
+                      {
+                        <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
+                      }
+                      @if (await Model.CanDeleteCommentAsync(comment))
+                      {
+                        <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="trash" text="@_l["Delete"].Value"/>
+                      }
+                    </div>
+                  </div>
                 </div>
               </div>
             }

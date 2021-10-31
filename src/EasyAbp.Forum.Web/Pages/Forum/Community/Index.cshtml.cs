@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EasyAbp.Forum.Communities;
 using EasyAbp.Forum.Communities.Dtos;
+using EasyAbp.Forum.Permissions;
 using EasyAbp.Forum.Posts;
 using EasyAbp.Forum.Posts.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Pagination;
 
@@ -11,6 +13,7 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Community
 {
     public class IndexModel : ForumPageModel
     {
+        private readonly IAuthorizationService _authorizationService;
         public static int PageSize = 15;
         
         public PagerModel PagerModel { get; set; }
@@ -23,6 +26,11 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Community
         public IReadOnlyList<PostDto> PinnedPosts { get; set; } = new List<PostDto>();
         
         public IReadOnlyList<PostDto> Posts { get; set; } = new List<PostDto>();
+
+        public IndexModel(IAuthorizationService authorizationService)
+        {
+            _authorizationService = authorizationService;
+        }
         
         public virtual async Task<IActionResult> OnGetAsync(string name)
         {
@@ -62,6 +70,11 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Community
                 Request.Path.ToString());
             
             return Page();
+        }
+
+        public virtual async Task<bool> CanCreatePostAsync()
+        {
+            return await _authorizationService.IsGrantedAsync(ForumPermissions.Post.Create);
         }
     }
 }

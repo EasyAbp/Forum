@@ -30,7 +30,7 @@
 
         <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
           <div class="d-flex justify-content-between align-items-center w-100">
-            <a class="community-display-name" href="~/Forum/Community/@community.Name"><strong class="text-gray-dark">@community.DisplayName</strong></a>
+            <a class="community-display-name" asp-page="/Forum/Community/Index" asp-all-route-data="@(new Dictionary<string, string> {{"name", community.Name}})"><strong class="text-gray-dark">@community.DisplayName</strong></a>
             <a href="#">@L["JoinCommunity"]</a>
           </div>
           <span class="d-block">@community.Description</span>
