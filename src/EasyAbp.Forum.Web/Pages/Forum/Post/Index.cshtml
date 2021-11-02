@@ -1,6 +1,7 @@
 ﻿@page "~/Forum/Post/{id}"
 @using Microsoft.Extensions.Localization
 @using EasyAbp.Forum.Localization
+@using EasyAbp.Forum.Web.Pages.Components.ForumSubCommentsWidget
 @model EasyAbp.Forum.Web.Pages.Forum.Post.IndexModel
 @inject IStringLocalizer<ForumResource> _l
 @{
@@ -97,44 +98,7 @@
               }
             </div>
           </div>
-          <div class="sub-comments">
-            @foreach (var subComment in Model.FirstPageSubComments[comment])
-            {
-              <div class="sub-comment media text-muted pt-3">
-                <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="@color"/></svg>
-                <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
-                  <div class="d-flex justify-content-between align-items-center w-100 mb-1">
-                    <strong class="text-gray-dark">@(subComment.CreatorId?.ToString() ?? _l["Anonymous"])</strong>
-                    <time class="timeago" datetime="@subComment.CreationTime">@comment.CreationTime</time>
-                  </div>
-                  <span class="d-block text-body">@subComment.Text</span>
-                  <div class="sub-comment-action mt-1 d-flex justify-content-between">
-                    <div class="sub-comment-action-left">
-                      @if (await Model.CanCreateCommentAsync())
-                      {
-                        <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="reply" text="@_l["Reply"].Value"/>
-                      }
-                      <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value"/>
-                      @if (await Model.CanEditCommentAsync(comment))
-                      {
-                        <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
-                      }
-                      @if (await Model.CanDeleteCommentAsync(comment))
-                      {
-                        <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="trash" text="@_l["Delete"].Value"/>
-                      }
-                    </div>
-                  </div>
-                </div>
-              </div>
-            }
-            @if (Model.FirstPageSubComments[comment].Count < comment.ChildrenCount)
-            {
-              <div class="mt-2">
-                <a href="#" class="load-more-sub-comments">@_l["LoadMoreSubComments"]</a>
-              </div>
-            }
-          </div>
+          @await Component.InvokeAsync(typeof(ForumSubCommentsWidgetViewComponent), new { comment = comment })
         </div>
       </div>
     }

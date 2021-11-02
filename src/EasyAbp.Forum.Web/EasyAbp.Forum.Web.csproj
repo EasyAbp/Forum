@@ -50,6 +50,7 @@
     <_ContentIncludedByDefault Remove="Pages\Forum\Communities\Community\CreateModal.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Forum\Communities\Community\EditModal.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Forum\Communities\Community\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Components\ForumSubCommentsWidget\Default.cshtml" />
   </ItemGroup>
 
 </Project>

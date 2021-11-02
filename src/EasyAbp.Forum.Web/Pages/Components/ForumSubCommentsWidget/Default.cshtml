@@ -1,0 +1,50 @@
+﻿@using EasyAbp.Forum.Localization
+@using Microsoft.Extensions.Localization
+@model EasyAbp.Forum.Web.Pages.Components.ForumSubCommentsWidget.ForumSubCommentsWidgetModel
+@inject IStringLocalizer<ForumResource> _l
+@{
+  var colors = new List<string>
+  {
+    "#007bff", "#e83e8c", "#6f42c1"
+  };
+}
+
+<div class="sub-comments">
+  @foreach (var (subComment, i) in Model.SubComments.Select((subComment, i) => (subComment, i)))
+  {
+    var color = colors[i % colors.Count];
+    <div class="sub-comment media text-muted pt-3">
+      <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="@color"/></svg>
+      <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
+        <div class="d-flex justify-content-between align-items-center w-100 mb-1">
+          <strong class="text-gray-dark">@(subComment.Comment.CreatorId?.ToString() ?? _l["Anonymous"])</strong>
+          <time class="timeago" datetime="@subComment.Comment.CreationTime">@subComment.Comment.CreationTime</time>
+        </div>
+        <span class="d-block text-body">@subComment.Comment.Text</span>
+        <div class="sub-comment-action mt-1 d-flex justify-content-between">
+          <div class="sub-comment-action-left">
+            @if (subComment.CanCreateComment)
+            {
+              <abp-button comment-id="@subComment.Comment.Id" class="text-secondary" button-type="Link" size="Small" icon="reply" text="@_l["Reply"].Value"/>
+            }
+            <abp-button comment-id="@subComment.Comment.Id" class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value"/>
+            @if (subComment.CanEditComment)
+            {
+              <abp-button comment-id="@subComment.Comment.Id" class="text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
+            }
+            @if (subComment.CanDeleteComment)
+            {
+              <abp-button comment-id="@subComment.Comment.Id" class="text-secondary" button-type="Link" size="Small" icon="trash" text="@_l["Delete"].Value"/>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+  @if (Model.SubComments.Count() < Model.Comment.ChildrenCount)
+  {
+    <div class="mt-2">
+      <a href="#" class="load-more-sub-comments">@_l["LoadMoreSubComments"]</a>
+    </div>
+  }
+</div>

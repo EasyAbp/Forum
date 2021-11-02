@@ -23,7 +23,6 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Post
         private readonly IAuthorizationService _authorizationService;
         private readonly ICommentAppService _commentAppService;
         public static int PageSize = 15;
-        public static int SubCommentPageSize = 10;
         
         public PagerModel PagerModel { get; set; }
 
@@ -50,8 +49,6 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Post
         public string CreateCommentText { get; set; }
 
         public List<CommentDto> Comments { get; set; } = new();
-        
-        public Dictionary<CommentDto, IReadOnlyList<CommentDto>> FirstPageSubComments { get; set; } = new();
 
         public IndexModel(
             IAuthorizationService authorizationService,
@@ -93,21 +90,21 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Post
                 Comments.AddFirst(pinnedComment);
             }
 
-            foreach (var comment in Comments)
-            {
-                if (comment.ChildrenCount == 0)
-                {
-                    FirstPageSubComments[comment] = new List<CommentDto>();
-                }
-                else
-                {
-                    FirstPageSubComments[comment] = (await _commentAppService.GetListAsync(new GetCommentListInput
-                    {
-                        ParentId = comment.Id,
-                        MaxResultCount = SubCommentPageSize
-                    })).Items;
-                }
-            }
+            // foreach (var comment in Comments)
+            // {
+            //     if (comment.ChildrenCount == 0)
+            //     {
+            //         FirstPageSubComments[comment] = new List<CommentDto>();
+            //     }
+            //     else
+            //     {
+            //         FirstPageSubComments[comment] = (await _commentAppService.GetListAsync(new GetCommentListInput
+            //         {
+            //             ParentId = comment.Id,
+            //             MaxResultCount = SubCommentPageSize
+            //         })).Items;
+            //     }
+            // }
 
             var communityAppService = LazyServiceProvider.LazyGetRequiredService<ICommunityAppService>();
 
