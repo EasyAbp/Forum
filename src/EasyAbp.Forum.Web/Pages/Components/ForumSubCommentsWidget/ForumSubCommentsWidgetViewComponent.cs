@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EasyAbp.Forum.Comments;
 using EasyAbp.Forum.Comments.Dtos;
@@ -12,7 +12,11 @@ using Volo.Abp.Users;
 
 namespace EasyAbp.Forum.Web.Pages.Components.ForumSubCommentsWidget
 {
-    [Widget]
+    [Widget(
+        AutoInitialize = true,
+        RefreshUrl = "/widgets/forum-sub-comments",
+        StyleFiles = new[] { "/Pages/Components/ForumSubCommentsWidget/Default.css" },
+        ScriptFiles = new[] { "/Pages/Components/ForumSubCommentsWidget/Default.js" })]
     [ViewComponent(Name = "ForumSubCommentsWidget")]
     public class ForumSubCommentsWidgetViewComponent : AbpViewComponent
     {
@@ -26,35 +30,36 @@ namespace EasyAbp.Forum.Web.Pages.Components.ForumSubCommentsWidget
         
         protected ICurrentUser CurrentUser => LazyServiceProvider.LazyGetRequiredService<ICurrentUser>();
 
-        public async Task<IViewComponentResult> InvokeAsync(CommentDto comment)
+        public async Task<IViewComponentResult> InvokeAsync(Guid postId, Guid commentId)
         {
             var canCreateComment = await CanCreateCommentAsync();
 
             var subComments = new List<ForumSubCommentsWidgetItemModel>();
             
-            if (comment.ChildrenCount > 0)
+            var getListResult = await CommentAppService.GetListAsync(new GetCommentListInput
             {
-                var getListResult = await CommentAppService.GetListAsync(new GetCommentListInput
-                {
-                    ParentId = comment.Id,
-                    MaxResultCount = SubCommentPageSize
-                });
+                ParentId = commentId,
+                MaxResultCount = SubCommentPageSize
+            });
 
-                foreach (var subComment in getListResult.Items)
+            foreach (var subComment in getListResult.Items)
+            {
+                subComments.Add(new ForumSubCommentsWidgetItemModel
                 {
-                    subComments.Add(new ForumSubCommentsWidgetItemModel
-                    {
-                        Comment = subComment,
-                        CanCreateComment = canCreateComment,
-                        CanEditComment = await CanEditCommentAsync(subComment),
-                        CanDeleteComment = await CanDeleteCommentAsync(subComment)
-                    });
-                }
+                    Comment = subComment,
+                    CanCreateComment = canCreateComment,
+                    CanEditComment = await CanEditCommentAsync(subComment),
+                    CanDeleteComment = await CanDeleteCommentAsync(subComment)
+                });
             }
             
             return View("~/Pages/Components/ForumSubCommentsWidget/Default.cshtml", new ForumSubCommentsWidgetModel
             {
-                Comment = comment,
+                CurrentUserName = CurrentUser.Name,
+                CanLoadMore = subComments.Count < getListResult.TotalCount,
+                CanCreateComment = canCreateComment,
+                PostId = postId,
+                CommentId = commentId,
                 SubComments = subComments
             });
         }

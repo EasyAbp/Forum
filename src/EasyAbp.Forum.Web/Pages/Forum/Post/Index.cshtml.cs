@@ -90,22 +90,6 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Post
                 Comments.AddFirst(pinnedComment);
             }
 
-            // foreach (var comment in Comments)
-            // {
-            //     if (comment.ChildrenCount == 0)
-            //     {
-            //         FirstPageSubComments[comment] = new List<CommentDto>();
-            //     }
-            //     else
-            //     {
-            //         FirstPageSubComments[comment] = (await _commentAppService.GetListAsync(new GetCommentListInput
-            //         {
-            //             ParentId = comment.Id,
-            //             MaxResultCount = SubCommentPageSize
-            //         })).Items;
-            //     }
-            // }
-
             var communityAppService = LazyServiceProvider.LazyGetRequiredService<ICommunityAppService>();
 
             Community = await communityAppService.GetAsync(Post.CommunityId);

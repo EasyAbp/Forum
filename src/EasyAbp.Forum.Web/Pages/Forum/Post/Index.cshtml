@@ -16,6 +16,11 @@
     <abp-style src="/Pages/Forum/Post/index.css"/>
 }
 
+@section scripts
+{
+    <abp-script src="/Pages/Forum/Post/index.js"/>
+}
+
 @if (Model.CurrentPage == 1)
 {
   <div class="container">
@@ -85,26 +90,30 @@
             <div class="comment-action-left">
               @if (await Model.CanCreateCommentAsync())
               {
-                <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="reply" text="@_l["Reply"].Value"/>
+                <abp-button data-comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="reply" text="@_l["Reply"].Value"/>
               }
-              <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value"/>
+              <abp-button data-comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value"/>
               @if (await Model.CanEditCommentAsync(comment))
               {
-                <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
+                <abp-button data-comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
               }
               @if (await Model.CanDeleteCommentAsync(comment))
               {
-                <abp-button comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="trash" text="@_l["Delete"].Value"/>
+                <abp-button data-comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="trash" text="@_l["Delete"].Value"/>
               }
             </div>
           </div>
-          @await Component.InvokeAsync(typeof(ForumSubCommentsWidgetViewComponent), new { comment = comment })
+          @if (comment.ChildrenCount > 0)
+          {
+            @await Component.InvokeAsync(typeof(ForumSubCommentsWidgetViewComponent), new
+            {
+              postId = comment.PostId,
+              commentId = comment.Id
+            })
+          }
         </div>
       </div>
     }
-    @if (Model.Comments.Any())
-    {
-      <abp-paginator model="Model.PagerModel" show-info="true"></abp-paginator>
-    }
+    <abp-paginator model="Model.PagerModel" show-info="true"></abp-paginator>
   </div>
 </div>
