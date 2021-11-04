@@ -9,6 +9,7 @@
             return {
                 postId: $subCommentsArea.data('post-id'),
                 commentId: $subCommentsArea.data('comment-id'),
+                hasChildren: true
             };
         }
 

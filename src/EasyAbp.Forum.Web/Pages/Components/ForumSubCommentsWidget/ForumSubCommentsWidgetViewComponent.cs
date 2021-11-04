@@ -30,33 +30,40 @@ namespace EasyAbp.Forum.Web.Pages.Components.ForumSubCommentsWidget
         
         protected ICurrentUser CurrentUser => LazyServiceProvider.LazyGetRequiredService<ICurrentUser>();
 
-        public async Task<IViewComponentResult> InvokeAsync(Guid postId, Guid commentId)
+        public async Task<IViewComponentResult> InvokeAsync(Guid postId, Guid commentId, bool hasChildren)
         {
             var canCreateComment = await CanCreateCommentAsync();
 
             var subComments = new List<ForumSubCommentsWidgetItemModel>();
-            
-            var getListResult = await CommentAppService.GetListAsync(new GetCommentListInput
-            {
-                ParentId = commentId,
-                MaxResultCount = SubCommentPageSize
-            });
 
-            foreach (var subComment in getListResult.Items)
+            var canLoadMore = false;
+
+            if (hasChildren)
             {
-                subComments.Add(new ForumSubCommentsWidgetItemModel
+                var getListResult = await CommentAppService.GetListAsync(new GetCommentListInput
                 {
-                    Comment = subComment,
-                    CanCreateComment = canCreateComment,
-                    CanEditComment = await CanEditCommentAsync(subComment),
-                    CanDeleteComment = await CanDeleteCommentAsync(subComment)
+                    ParentId = commentId,
+                    MaxResultCount = SubCommentPageSize
                 });
+
+                foreach (var subComment in getListResult.Items)
+                {
+                    subComments.Add(new ForumSubCommentsWidgetItemModel
+                    {
+                        Comment = subComment,
+                        CanCreateComment = canCreateComment,
+                        CanEditComment = await CanEditCommentAsync(subComment),
+                        CanDeleteComment = await CanDeleteCommentAsync(subComment)
+                    });
+                }
+
+                canLoadMore = subComments.Count < getListResult.TotalCount;
             }
-            
+
             return View("~/Pages/Components/ForumSubCommentsWidget/Default.cshtml", new ForumSubCommentsWidgetModel
             {
                 CurrentUserName = CurrentUser.Name,
-                CanLoadMore = subComments.Count < getListResult.TotalCount,
+                CanLoadMore = canLoadMore,
                 CanCreateComment = canCreateComment,
                 PostId = postId,
                 CommentId = commentId,

@@ -5,8 +5,8 @@ $(function () {
     var service = easyAbp.forum.posts.community;
     var createModal = new abp.ModalManager(abp.appPath + 'Forum/Post/CreateModal');
 
-    createModal.onResult(function (result) {
-        console.log(result)
+    createModal.onResult(function (e, result) {
+        window.location.href = abp.appPath + 'Forum/Post/' + JSON.parse(result.responseText).id;
     });
 
     $('#CreatePostButton').click(function (e) {

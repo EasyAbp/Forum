@@ -113,14 +113,12 @@
               </div>
             </div>
           }
-          @if (comment.ChildrenCount > 0)
+          @await Component.InvokeAsync(typeof(ForumSubCommentsWidgetViewComponent), new
           {
-            @await Component.InvokeAsync(typeof(ForumSubCommentsWidgetViewComponent), new
-            {
-              postId = comment.PostId,
-              commentId = comment.Id
-            })
-          }
+            postId = comment.PostId,
+            commentId = comment.Id,
+            hasChildren = comment.ChildrenCount > 0
+          })
         </div>
       </div>
     }
