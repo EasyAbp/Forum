@@ -18,9 +18,10 @@
                 subComment.find('.btn-reply').click(function () {
                     var createCommentArea = subComment.find(".create-sub-comment");
                     if (createCommentArea.is(":hidden")) {
+                        $('.create-sub-comment').hide();
                         createCommentArea.show();
                     } else {
-                        createCommentArea.hide();
+                        $('.create-sub-comment').hide();
                     }
                 });
             });

@@ -69,7 +69,7 @@
 }
 
 <div class="container">
-  <div class="comments my-3 p-3 bg-white rounded shadow-sm">
+  <div data-post-id="@Model.PostId" class="comments my-3 p-3 bg-white rounded shadow-sm">
     @if (!Model.Comments.Any())
     {
       <p class="mt-3 text-center text-secondary">@_l["NoComments"]</p>
@@ -77,7 +77,7 @@
     @foreach (var (comment, i) in Model.Comments.Select((comment, i) => (comment, i)))
     {
       var color = colors[i % colors.Count];
-      <div class="comment media text-muted pt-3">
+      <div class="comment media text-muted pt-3" data-comment-id="@comment.Id">
         <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="@color"/></svg>
 
         <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
@@ -90,7 +90,7 @@
             <div class="comment-action-left">
               @if (await Model.CanCreateCommentAsync())
               {
-                <abp-button data-comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="reply" text="@_l["Reply"].Value"/>
+                <abp-button data-comment-id="@comment.Id" class="primary-btn-reply text-secondary" button-type="Link" size="Small" icon="reply" text="@_l["Reply"].Value"/>
               }
               <abp-button data-comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value"/>
               @if (await Model.CanEditCommentAsync(comment))
@@ -103,6 +103,16 @@
               }
             </div>
           </div>
+          @if (await Model.CanCreateCommentAsync())
+          {
+            <div class="primary-create-sub-comment create-sub-comment border-top mt-3 pt-2" style="display: none">
+              <label>@_l.GetString("CommentAs", HttpContext.User.Identity?.Name ?? _l["Anonymous"])</label>
+              <textarea class="form-control primary-create-sub-comment-text" placeholder="@_l["CreateCommentTextPlaceholder"]" rows="3"></textarea>
+              <div class="mt-3 d-flex flex-row-reverse">
+                <abp-button class="primary-create-sub-comment-submit-btn" button-type="Primary" size="Small" text="@_l["Submit"].Value" />
+              </div>
+            </div>
+          }
           @if (comment.ChildrenCount > 0)
           {
             @await Component.InvokeAsync(typeof(ForumSubCommentsWidgetViewComponent), new
