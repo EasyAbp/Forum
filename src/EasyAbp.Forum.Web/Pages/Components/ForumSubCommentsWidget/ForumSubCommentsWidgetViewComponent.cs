@@ -42,6 +42,7 @@ namespace EasyAbp.Forum.Web.Pages.Components.ForumSubCommentsWidget
             {
                 var getListResult = await CommentAppService.GetListAsync(new GetCommentListInput
                 {
+                    PostId = postId,
                     ParentId = commentId,
                     MaxResultCount = SubCommentPageSize
                 });

@@ -1,9 +1,11 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using EasyAbp.Forum.Permissions;
 using EasyAbp.Forum.Comments.Dtos;
+using EasyAbp.Forum.Permissions;
 using EasyAbp.Forum.Posts;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Validation;
@@ -13,12 +15,6 @@ namespace EasyAbp.Forum.Comments
     public class CommentAppService : CrudAppService<Comment, CommentDto, Guid, GetCommentListInput, CreateCommentDto, UpdateCommentDto>,
         ICommentAppService
     {
-        protected override string GetPolicyName { get; set; } = null;
-        protected override string GetListPolicyName { get; set; } = null;
-        protected override string CreatePolicyName { get; set; } = ForumPermissions.Comment.Create;
-        protected override string UpdatePolicyName { get; set; } = ForumPermissions.Comment.Update;
-        protected override string DeletePolicyName { get; set; } = ForumPermissions.Comment.Delete;
-
         private readonly IPostRepository _postRepository;
         private readonly ICommentRepository _repository;
         
@@ -33,7 +29,7 @@ namespace EasyAbp.Forum.Comments
         protected override async Task<IQueryable<Comment>> CreateFilteredQueryAsync(GetCommentListInput input)
         {
             return (await base.CreateFilteredQueryAsync(input))
-                .WhereIf(input.PostId.HasValue, x => x.PostId == input.PostId.Value)
+                .Where(x => x.PostId == input.PostId)
                 .Where(x => x.ParentId == input.ParentId);
         }
 
@@ -54,13 +50,57 @@ namespace EasyAbp.Forum.Comments
             
             return Task.CompletedTask;
         }
+        
+        protected virtual CommentOperationInfoModel CreateCommentOperationInfoModel(Comment comment, Guid communityId)
+        {
+            return new()
+            {
+                CommunityId = communityId,
+                PostId = comment.PostId,
+                Comment = comment
+            };
+        }
+
+        public override async Task<CommentDto> GetAsync(Guid id)
+        {
+            var comment = await GetEntityByIdAsync(id);
+            
+            var post = await _postRepository.GetAsync(comment.PostId);
+
+            await AuthorizationService.CheckAsync(CreateCommentOperationInfoModel(comment, post.CommunityId),
+                new OperationAuthorizationRequirement {Name = ForumPermissions.Comment.Default});
+
+            return await MapToGetOutputDtoAsync(comment);
+        }
+
+        public override async Task<PagedResultDto<CommentDto>> GetListAsync(GetCommentListInput input)
+        {
+            var post = await _postRepository.GetAsync(input.PostId);
+
+            await AuthorizationService.CheckAsync(new CommentOperationInfoModel
+                    {CommunityId = post.CommunityId, PostId = input.PostId, ParentId = input.ParentId},
+                new OperationAuthorizationRequirement {Name = ForumPermissions.Comment.Default});
+            
+            var query = await CreateFilteredQueryAsync(input);
+
+            var totalCount = await AsyncExecuter.CountAsync(query);
+
+            query = ApplySorting(query, input);
+            query = ApplyPaging(query, input);
+
+            var entities = await AsyncExecuter.ToListAsync(query);
+            var entityDtos = await MapToGetListOutputDtosAsync(entities);
+
+            return new PagedResultDto<CommentDto>(
+                totalCount,
+                entityDtos
+            );
+        }
 
         public override async Task<CommentDto> CreateAsync(CreateCommentDto input)
         {
-            await CheckCreatePolicyAsync();
-
             var post = await _postRepository.GetAsync(input.PostId);
-            
+
             if (input.ParentId.HasValue)
             {
                 var parent = await _repository.GetAsync(input.ParentId.Value);
@@ -71,24 +111,42 @@ namespace EasyAbp.Forum.Comments
                 }
             }
 
-            var entity = await MapToEntityAsync(input);
+            var comment = await MapToEntityAsync(input);
+            
+            await AuthorizationService.CheckAsync(CreateCommentOperationInfoModel(comment, post.CommunityId),
+                new OperationAuthorizationRequirement {Name = ForumPermissions.Comment.Create});
 
-            await Repository.InsertAsync(entity, autoSave: true);
+            await Repository.InsertAsync(comment, autoSave: true);
 
-            return await MapToGetOutputDtoAsync(entity);
+            return await MapToGetOutputDtoAsync(comment);
         }
 
         public override async Task<CommentDto> UpdateAsync(Guid id, UpdateCommentDto input)
         {
-            await CheckUpdatePolicyAsync();
+            var comment = await GetEntityByIdAsync(id);
 
-            var entity = await GetEntityByIdAsync(id);
+            var post = await _postRepository.GetAsync(comment.PostId);
 
-            await MapToEntityAsync(input, entity);
+            await MapToEntityAsync(input, comment);
             
-            await Repository.UpdateAsync(entity, autoSave: true);
+            await AuthorizationService.CheckAsync(CreateCommentOperationInfoModel(comment, post.CommunityId),
+                new OperationAuthorizationRequirement {Name = ForumPermissions.Comment.Update});
+            
+            await Repository.UpdateAsync(comment, autoSave: true);
 
-            return await MapToGetOutputDtoAsync(entity);
+            return await MapToGetOutputDtoAsync(comment);
+        }
+
+        public override async Task DeleteAsync(Guid id)
+        {
+            var comment = await GetEntityByIdAsync(id);
+
+            var post = await _postRepository.GetAsync(comment.PostId);
+            
+            await AuthorizationService.CheckAsync(CreateCommentOperationInfoModel(comment, post.CommunityId),
+                new OperationAuthorizationRequirement {Name = ForumPermissions.Comment.Delete});
+
+            await _repository.DeleteAsync(comment);
         }
     }
 }

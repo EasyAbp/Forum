@@ -7,7 +7,7 @@ namespace EasyAbp.Forum.Comments.Dtos
     [Serializable]
     public class GetCommentListInput : PagedAndSortedResultRequestDto, IHasExtraProperties
     {
-        public Guid? PostId { get; set; }
+        public Guid PostId { get; set; }
         
         public Guid? ParentId { get; set; }
         

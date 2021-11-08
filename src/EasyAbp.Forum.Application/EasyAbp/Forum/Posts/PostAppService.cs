@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using EasyAbp.Forum.Communities;
 using EasyAbp.Forum.Permissions;
 using EasyAbp.Forum.Posts.Dtos;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
@@ -12,12 +14,6 @@ namespace EasyAbp.Forum.Posts
     public class PostAppService : CrudAppService<Post, PostDto, Guid, GetPostListInput, CreatePostDto, UpdatePostDto>,
         IPostAppService
     {
-        protected override string GetPolicyName { get; set; } = null;
-        protected override string GetListPolicyName { get; set; } = null;
-        protected override string CreatePolicyName { get; set; } = ForumPermissions.Post.Create;
-        protected override string UpdatePolicyName { get; set; } = ForumPermissions.Post.Update;
-        protected override string DeletePolicyName { get; set; } = ForumPermissions.Post.Delete;
-
         private readonly IPostOutlineGenerator _postOutlineGenerator;
         private readonly ICommunityRepository _communityRepository;
         private readonly IPostRepository _repository;
@@ -35,7 +31,7 @@ namespace EasyAbp.Forum.Posts
         protected override async Task<IQueryable<Post>> CreateFilteredQueryAsync(GetPostListInput input)
         {
             return (await base.CreateFilteredQueryAsync(input))
-                .WhereIf(input.CommunityId.HasValue, x => x.CommunityId == input.CommunityId.Value)
+                .Where(x => x.CommunityId == input.CommunityId)
                 .WhereIf(input.PinnedOnly, x => x.Pinned);
         }
 
@@ -51,38 +47,91 @@ namespace EasyAbp.Forum.Posts
             entity.Update(updateInput.Title, await _postOutlineGenerator.CreateAsync(updateInput.Content.Text),
                 entity.Thumbnail, updateInput.Content.Text);
         }
+        
+        protected virtual PostOperationInfoModel CreatePostOperationInfoModel(Post post)
+        {
+            return new()
+            {
+                CommunityId = post.CommunityId,
+                Post = post
+            };
+        }
+
+        public override async Task<PostDto> GetAsync(Guid id)
+        {
+            var post = await GetEntityByIdAsync(id);
+            
+            await AuthorizationService.CheckAsync(CreatePostOperationInfoModel(post),
+                new OperationAuthorizationRequirement {Name = ForumPermissions.Post.Default});
+
+            return await MapToGetOutputDtoAsync(post);
+        }
+
+        public override async Task<PagedResultDto<PostDto>> GetListAsync(GetPostListInput input)
+        {
+            await AuthorizationService.CheckAsync(new PostOperationInfoModel {CommunityId = input.CommunityId},
+                new OperationAuthorizationRequirement {Name = ForumPermissions.Post.Default});
+
+            var query = await CreateFilteredQueryAsync(input);
+
+            var totalCount = await AsyncExecuter.CountAsync(query);
+
+            query = ApplySorting(query, input);
+            query = ApplyPaging(query, input);
+
+            var entities = await AsyncExecuter.ToListAsync(query);
+            var entityDtos = await MapToGetListOutputDtosAsync(entities);
+
+            return new PagedResultDto<PostDto>(
+                totalCount,
+                entityDtos
+            );
+        }
 
         public override async Task<PostDto> CreateAsync(CreatePostDto input)
         {
-            await CheckCreatePolicyAsync();
+            var post = await MapToEntityAsync(input);
+            
+            await AuthorizationService.CheckAsync(CreatePostOperationInfoModel(post),
+                new OperationAuthorizationRequirement {Name = ForumPermissions.Post.Create});
 
             await _communityRepository.GetAsync(input.CommunityId);
 
-            var entity = await MapToEntityAsync(input);
+            await Repository.InsertAsync(post, autoSave: true);
 
-            await Repository.InsertAsync(entity, autoSave: true);
-
-            return await MapToGetOutputDtoAsync(entity);
+            return await MapToGetOutputDtoAsync(post);
         }
 
         public override async Task<PostDto> UpdateAsync(Guid id, UpdatePostDto input)
         {
-            await CheckUpdatePolicyAsync();
+            var post = await GetEntityByIdAsync(id);
 
-            var entity = await GetEntityByIdAsync(id);
-
-            await MapToEntityAsync(input, entity);
+            await MapToEntityAsync(input, post);
             
-            await Repository.UpdateAsync(entity, autoSave: true);
+            await AuthorizationService.CheckAsync(CreatePostOperationInfoModel(post),
+                new OperationAuthorizationRequirement {Name = ForumPermissions.Post.Update});
+            
+            await Repository.UpdateAsync(post, autoSave: true);
 
-            return await MapToGetOutputDtoAsync(entity);
+            return await MapToGetOutputDtoAsync(post);
+        }
+
+        public override async Task DeleteAsync(Guid id)
+        {
+            var post = await GetEntityByIdAsync(id);
+
+            await AuthorizationService.CheckAsync(CreatePostOperationInfoModel(post),
+                new OperationAuthorizationRequirement {Name = ForumPermissions.Post.Delete});
+
+            await _repository.DeleteAsync(post, true);
         }
 
         public virtual async Task PinAsync(Guid id)
         {
-            await CheckPinPolicyAsync();
-
             var post = await GetEntityByIdAsync(id);
+            
+            await AuthorizationService.CheckAsync(CreatePostOperationInfoModel(post),
+                new OperationAuthorizationRequirement {Name = ForumPermissions.Post.Pin});
 
             post.SetPinned(true);
 
@@ -91,18 +140,14 @@ namespace EasyAbp.Forum.Posts
 
         public virtual async Task UnpinAsync(Guid id)
         {
-            await CheckPinPolicyAsync();
-            
             var post = await GetEntityByIdAsync(id);
 
+            await AuthorizationService.CheckAsync(CreatePostOperationInfoModel(post),
+                new OperationAuthorizationRequirement {Name = ForumPermissions.Post.Pin});
+            
             post.SetPinned(false);
 
             await _repository.UpdateAsync(post, true);
-        }
-        
-        protected virtual async Task CheckPinPolicyAsync()
-        {
-            await CheckPolicyAsync(ForumPermissions.Post.Pin);
         }
     }
 }
