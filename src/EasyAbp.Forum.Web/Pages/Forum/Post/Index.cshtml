@@ -51,14 +51,12 @@
             @if (await Model.CanCreateCommentAsync())
             {
               <div class="create-comment border-top mt-3 pt-2">
-                <form asp-page="/Forum/Post/Index">
-                  <label>@_l.GetString("CommentAs", HttpContext.User.Identity!.Name!)</label>
-                  <textarea asp-for="CreateCommentText" class="form-control" placeholder="@_l["CreateCommentTextPlaceholder"]" rows="3"></textarea>
-                  <span asp-validation-for="CreateCommentText" class="text-danger"></span>
-                  <div class="mt-3 d-flex flex-row-reverse">
-                    <abp-button button-type="Primary" size="Small" text="@_l["Submit"].Value" type="submit" />
-                  </div>
-                </form>
+                <label>@_l.GetString("CommentAs", HttpContext.User.Identity!.Name!)</label>
+                <textarea asp-for="CreateCommentText" class="form-control" placeholder="@_l["CreateCommentTextPlaceholder"]" rows="3"></textarea>
+                <span asp-validation-for="CreateCommentText" class="text-danger"></span>
+                <div class="mt-3 d-flex flex-row-reverse">
+                  <abp-button button-type="Primary" size="Small" text="@_l["Submit"].Value" type="submit" />
+                </div>
               </div>
             }
           </div>

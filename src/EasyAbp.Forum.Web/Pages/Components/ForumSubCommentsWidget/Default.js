@@ -33,7 +33,9 @@
             var commentId = $subCommentsArea.data("comment-id");
             $widget.find('.sub-comment').each(function () {
                 var subComment = $(this);
-                subComment.find('.create-sub-comment-submit-btn').click(function () {
+                var btn = subComment.find('.create-sub-comment-submit-btn');
+                btn.click(function () {
+                    btn.buttonBusy(true);
                     service.create({
                         parentId: commentId,
                         postId: postId,
@@ -44,6 +46,7 @@
                 });
             });
         }
+        
         
         function init() {
             registerClickOfReplyBtn();

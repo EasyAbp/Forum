@@ -13,6 +13,7 @@ using EasyAbp.Forum.Posts.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Pagination;
+using Volo.Abp.Json;
 using Volo.Abp.Users;
 using Volo.Abp.Validation;
 
@@ -22,6 +23,7 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Post
     {
         private readonly IAuthorizationService _authorizationService;
         private readonly ICommentAppService _commentAppService;
+        private readonly IJsonSerializer _jsonSerializer;
         public static int PageSize = 15;
         
         public PagerModel PagerModel { get; set; }
@@ -52,10 +54,12 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Post
 
         public IndexModel(
             IAuthorizationService authorizationService,
-            ICommentAppService commentAppService)
+            ICommentAppService commentAppService,
+            IJsonSerializer jsonSerializer)
         {
             _authorizationService = authorizationService;
             _commentAppService = commentAppService;
+            _jsonSerializer = jsonSerializer;
         }
         
         public virtual async Task<IActionResult> OnGetAsync()
@@ -105,7 +109,7 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Post
                 Text = CreateCommentText
             });
 
-            return RedirectToPage("/Forum/Post/Index", new {pinnedCommentId = newComment.Id});
+            return Content(_jsonSerializer.Serialize(newComment));
         }
         
         public virtual async Task<bool> CanEditPostAsync()
