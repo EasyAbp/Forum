@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Forum.Comments.Dtos;
 using EasyAbp.Forum.Permissions;
 using EasyAbp.Forum.Posts;
+using EasyAbp.Forum.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Volo.Abp.Application.Dtos;
@@ -15,13 +17,16 @@ namespace EasyAbp.Forum.Comments
     public class CommentAppService : CrudAppService<Comment, CommentDto, Guid, GetCommentListInput, CreateCommentDto, UpdateCommentDto>,
         ICommentAppService
     {
+        private readonly IForumUserLookupService _forumUserLookupService;
         private readonly IPostRepository _postRepository;
         private readonly ICommentRepository _repository;
         
         public CommentAppService(
+            IForumUserLookupService forumUserLookupService,
             IPostRepository postRepository,
             ICommentRepository repository) : base(repository)
         {
+            _forumUserLookupService = forumUserLookupService;
             _postRepository = postRepository;
             _repository = repository;
         }
@@ -49,6 +54,20 @@ namespace EasyAbp.Forum.Comments
             entity.Update(updateInput.Text);
             
             return Task.CompletedTask;
+        }
+        
+        protected override async Task<CommentDto> MapToGetOutputDtoAsync(Comment entity)
+        {
+            var dto = await base.MapToGetOutputDtoAsync(entity);
+
+            if (!dto.CreatorId.HasValue)
+            {
+                return dto;
+            }
+
+            dto.CreatorUserName = (await _forumUserLookupService.FindByIdAsync(dto.CreatorId.Value))?.UserName;
+
+            return dto;
         }
         
         protected virtual CommentOperationInfoModel CreateCommentOperationInfoModel(Comment comment, Guid communityId)
@@ -88,8 +107,8 @@ namespace EasyAbp.Forum.Comments
             query = ApplySorting(query, input);
             query = ApplyPaging(query, input);
 
-            var entities = await AsyncExecuter.ToListAsync(query);
-            var entityDtos = await MapToGetListOutputDtosAsync(entities);
+            var entities = await _repository.GetCommentWithCreatorInfoListAsync(query);
+            var entityDtos = ObjectMapper.Map<List<CommentWithCreatorInfo>, List<CommentDto>>(entities);
 
             return new PagedResultDto<CommentDto>(
                 totalCount,

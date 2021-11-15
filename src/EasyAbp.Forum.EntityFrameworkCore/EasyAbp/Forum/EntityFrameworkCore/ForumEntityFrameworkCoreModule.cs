@@ -1,15 +1,18 @@
 using EasyAbp.Forum.Comments;
 using EasyAbp.Forum.Posts;
 using EasyAbp.Forum.Communities;
+using EasyAbp.Forum.Users;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
+using Volo.Abp.Users.EntityFrameworkCore;
 
 namespace EasyAbp.Forum.EntityFrameworkCore
 {
     [DependsOn(
         typeof(ForumDomainModule),
-        typeof(AbpEntityFrameworkCoreModule)
+        typeof(AbpEntityFrameworkCoreModule),
+        typeof(AbpUsersEntityFrameworkCoreModule)
     )]
     public class ForumEntityFrameworkCoreModule : AbpModule
     {
@@ -23,6 +26,7 @@ namespace EasyAbp.Forum.EntityFrameworkCore
                 options.AddRepository<Community, CommunityRepository>();
                 options.AddRepository<Post, PostRepository>();
                 options.AddRepository<Comment, CommentRepository>();
+                options.AddRepository<ForumUser, ForumUserRepository>();
             });
         }
     }

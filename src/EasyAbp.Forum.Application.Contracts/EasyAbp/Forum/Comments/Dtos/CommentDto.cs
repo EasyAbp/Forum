@@ -13,5 +13,7 @@ namespace EasyAbp.Forum.Comments.Dtos
         public string Text { get; set; }
         
         public int ChildrenCount { get; set; }
+        
+        public string CreatorUserName { get; set; }
     }
 }

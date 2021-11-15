@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Forum.Communities;
 using EasyAbp.Forum.Permissions;
 using EasyAbp.Forum.Posts.Dtos;
+using EasyAbp.Forum.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Volo.Abp.Application.Dtos;
@@ -14,15 +16,18 @@ namespace EasyAbp.Forum.Posts
     public class PostAppService : CrudAppService<Post, PostDto, Guid, GetPostListInput, CreatePostDto, UpdatePostDto>,
         IPostAppService
     {
+        private readonly IForumUserLookupService _forumUserLookupService;
         private readonly IPostOutlineGenerator _postOutlineGenerator;
         private readonly ICommunityRepository _communityRepository;
         private readonly IPostRepository _repository;
         
         public PostAppService(
+            IForumUserLookupService forumUserLookupService,
             IPostOutlineGenerator postOutlineGenerator,
             ICommunityRepository communityRepository,
             IPostRepository repository) : base(repository)
         {
+            _forumUserLookupService = forumUserLookupService;
             _postOutlineGenerator = postOutlineGenerator;
             _communityRepository = communityRepository;
             _repository = repository;
@@ -47,7 +52,21 @@ namespace EasyAbp.Forum.Posts
             entity.Update(updateInput.Title, await _postOutlineGenerator.CreateAsync(updateInput.Content.Text),
                 entity.Thumbnail, updateInput.Content.Text);
         }
-        
+
+        protected override async Task<PostDto> MapToGetOutputDtoAsync(Post entity)
+        {
+            var dto = await base.MapToGetOutputDtoAsync(entity);
+
+            if (!dto.CreatorId.HasValue)
+            {
+                return dto;
+            }
+
+            dto.CreatorUserName = (await _forumUserLookupService.FindByIdAsync(dto.CreatorId.Value))?.UserName;
+
+            return dto;
+        }
+
         protected virtual PostOperationInfoModel CreatePostOperationInfoModel(Post post)
         {
             return new()
@@ -79,8 +98,8 @@ namespace EasyAbp.Forum.Posts
             query = ApplySorting(query, input);
             query = ApplyPaging(query, input);
 
-            var entities = await AsyncExecuter.ToListAsync(query);
-            var entityDtos = await MapToGetListOutputDtosAsync(entities);
+            var entities = await _repository.GetPostWithCreatorInfoListAsync(query);
+            var entityDtos = ObjectMapper.Map<List<PostWithCreatorInfo>, List<PostDto>>(entities);
 
             return new PagedResultDto<PostDto>(
                 totalCount,

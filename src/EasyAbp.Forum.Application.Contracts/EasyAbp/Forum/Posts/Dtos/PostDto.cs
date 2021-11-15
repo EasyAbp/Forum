@@ -17,5 +17,7 @@ namespace EasyAbp.Forum.Posts.Dtos
         public PostContentDto Content { get; set; }
 
         public bool Pinned { get; set; }
+        
+        public string CreatorUserName { get; set; }
     }
 }

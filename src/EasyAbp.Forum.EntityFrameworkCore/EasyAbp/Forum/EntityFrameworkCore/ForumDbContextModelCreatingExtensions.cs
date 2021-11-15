@@ -2,9 +2,11 @@ using EasyAbp.Forum.Comments;
 using EasyAbp.Forum.Posts;
 using EasyAbp.Forum.Communities;
 using System;
+using EasyAbp.Forum.Users;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 using Volo.Abp.EntityFrameworkCore.Modeling;
+using Volo.Abp.Users.EntityFrameworkCore;
 
 namespace EasyAbp.Forum.EntityFrameworkCore
 {
@@ -43,13 +45,11 @@ namespace EasyAbp.Forum.EntityFrameworkCore
             });
             */
 
-
             builder.Entity<Community>(b =>
             {
                 b.ToTable(options.TablePrefix + "Communities", options.Schema);
                 b.ConfigureByConvention(); 
                 
-
                 /* Configure more properties here */
             });
 
@@ -58,7 +58,6 @@ namespace EasyAbp.Forum.EntityFrameworkCore
             {
                 b.ToTable(options.TablePrefix + "Posts", options.Schema);
                 b.ConfigureByConvention(); 
-                
 
                 /* Configure more properties here */
             });
@@ -69,7 +68,6 @@ namespace EasyAbp.Forum.EntityFrameworkCore
                 b.ToTable(options.TablePrefix + "Comments", options.Schema);
                 b.ConfigureByConvention(); 
                 
-
                 /* Configure more properties here */
             });
 
@@ -85,6 +83,15 @@ namespace EasyAbp.Forum.EntityFrameworkCore
                 });
 
                 /* Configure more properties here */
+            });
+
+
+            builder.Entity<ForumUser>(b =>
+            {
+                b.ToTable(options.TablePrefix + "Users", options.Schema);
+
+                b.ConfigureByConvention();
+                b.ConfigureAbpUser();
             });
         }
     }

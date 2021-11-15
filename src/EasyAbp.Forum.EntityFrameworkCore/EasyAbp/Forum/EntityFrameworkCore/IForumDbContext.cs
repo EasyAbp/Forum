@@ -4,6 +4,7 @@ using Volo.Abp.EntityFrameworkCore;
 using EasyAbp.Forum.Communities;
 using EasyAbp.Forum.Posts;
 using EasyAbp.Forum.Comments;
+using EasyAbp.Forum.Users;
 
 namespace EasyAbp.Forum.EntityFrameworkCore
 {
@@ -17,5 +18,6 @@ namespace EasyAbp.Forum.EntityFrameworkCore
         DbSet<Post> Posts { get; set; }
         DbSet<Comment> Comments { get; set; }
         DbSet<PostContent> PostContents { get; set; }
+        DbSet<ForumUser> ForumUsers { get; set; }
     }
 }

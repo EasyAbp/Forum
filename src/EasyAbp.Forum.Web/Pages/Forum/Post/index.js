@@ -43,8 +43,8 @@
         registerClickOfSubmitBtn();
     }
 
-    $('#create-comment-form').on('abp-ajax-success', function (e, result) {
-        $(this).find("button[type=submit]").hide();
+    $('.create-comment-form').on('abp-ajax-success', function (e, result) {
+        $(this).hide();
         document.location.href = document.location.origin + document.location.pathname + '?pinnedCommentId=' + JSON.parse(result.responseText).id;
     });
 
