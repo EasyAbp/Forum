@@ -20,7 +20,13 @@
                     var createCommentArea = subComment.find(".create-sub-comment");
                     if (createCommentArea.is(":hidden")) {
                         $('.create-sub-comment').hide();
+                        var textarea = createCommentArea.find('.create-sub-comment-text');
+                        var username = subComment.data('creator-username');
                         createCommentArea.show();
+                        textarea.focus();
+                        if (username) {
+                            textarea.val('@' + username + ' ');
+                        }
                     } else {
                         $('.create-sub-comment').hide();
                     }
