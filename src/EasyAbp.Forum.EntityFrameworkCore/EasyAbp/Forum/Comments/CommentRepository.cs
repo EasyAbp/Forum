@@ -17,7 +17,7 @@ namespace EasyAbp.Forum.Comments
         
         public virtual async Task<List<CommentWithCreatorInfo>> GetCommentWithCreatorInfoListAsync(IQueryable<Comment> queryable)
         {
-            return await (from comment in await GetDbSetAsync()
+            return await (from comment in queryable
                 join formUser in (await GetDbContextAsync()).ForumUsers on comment.CreatorId equals formUser.Id
                     into formUsers
                 from formUser in formUsers.DefaultIfEmpty()

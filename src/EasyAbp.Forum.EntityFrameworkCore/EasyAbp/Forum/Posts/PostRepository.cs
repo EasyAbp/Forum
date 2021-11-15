@@ -22,7 +22,7 @@ namespace EasyAbp.Forum.Posts
 
         public virtual async Task<List<PostWithCreatorInfo>> GetPostWithCreatorInfoListAsync(IQueryable<Post> queryable)
         {
-            return await (from post in await GetDbSetAsync()
+            return await (from post in queryable
                 join formUser in (await GetDbContextAsync()).ForumUsers on post.CreatorId equals formUser.Id
                     into formUsers
                 from formUser in formUsers.DefaultIfEmpty()
