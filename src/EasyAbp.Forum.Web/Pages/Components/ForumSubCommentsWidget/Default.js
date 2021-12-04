@@ -1,5 +1,6 @@
 (function ($) {
 
+    var l = abp.localization.getResource('EasyAbpForum');
     var editCommentModal = new abp.ModalManager(abp.appPath + 'Forum/Comment/EditModal');
 
     abp.widgets.ForumSubCommentsWidget = function ($widget) {
@@ -72,11 +73,31 @@
             });
         }
         
+        function registerClickOfDeleteBtn() {
+            $widget.find('.sub-comment').each(function () {
+                var subComment = $(this);
+                subComment.find('.btn-delete').click(function (e) {
+                    e.preventDefault();
+                    abp.message.confirm(
+                        l('CommentDeletionConfirmationMessage', ''),
+                        l('AreYouSure')
+                    ).then(function (confirmed) {
+                        if (confirmed) {
+                            service.delete(subComment.data('comment-id'))
+                                .then(function () {
+                                    widgetManager.refresh($widget);
+                                });
+                        }
+                    });
+                });
+            });
+        }
         
         function init() {
             registerClickOfReplyBtn();
             registerClickOfSubmitBtn();
             registerClickOfEditBtn();
+            registerClickOfDeleteBtn();
         }
 
         return {

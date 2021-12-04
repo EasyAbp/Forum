@@ -99,7 +99,7 @@
               }
               @if (await Model.CanDeleteCommentAsync(comment))
               {
-                <abp-button class="text-secondary" button-type="Link" size="Small" icon="trash" text="@_l["Delete"].Value"/>
+                <abp-button class="primary-btn-delete text-secondary" button-type="Link" size="Small" icon="trash" text="@_l["Delete"].Value"/>
               }
             </div>
           </div>
