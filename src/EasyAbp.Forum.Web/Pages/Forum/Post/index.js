@@ -1,8 +1,17 @@
 (function ($) {
 
     var service = easyAbp.forum.comments.comment;
+    var editCommentModal = new abp.ModalManager(abp.appPath + 'Forum/Comment/EditModal');
+
     var postId = $('.comments').data("post-id");
 
+
+    function registerClickOfCommentsBtn() {
+        $('.btn-comments').click(function () {
+            document.getElementById('comments').scrollIntoView();
+        });
+    }
+    
     function registerClickOfReplyBtn() {
         $('.comment').each(function () {
             var comment = $(this);
@@ -14,6 +23,15 @@
                 } else {
                     $('.create-sub-comment').hide();
                 }
+            });
+        });
+    }
+
+    function registerClickOfEditCommentBtn() {
+        $('.comment').each(function () {
+            var comment = $(this);
+            comment.find('.primary-btn-edit').click(function () {
+                editCommentModal.open({ id: comment.data('comment-id') });
             });
         });
     }
@@ -39,13 +57,19 @@
     }
 
     function init() {
+        registerClickOfCommentsBtn();
         registerClickOfReplyBtn();
         registerClickOfSubmitBtn();
+        registerClickOfEditCommentBtn();
     }
 
     $('.create-comment-form').on('abp-ajax-success', function (e, result) {
         $(this).hide();
         document.location.href = document.location.origin + document.location.pathname + '?pinnedCommentId=' + JSON.parse(result.responseText).id;
+    });
+
+    editCommentModal.onResult(function () {
+        window.location.reload();
     });
 
     init();

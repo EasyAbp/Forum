@@ -28,10 +28,10 @@
               {
                 <abp-button class="btn-reply text-secondary" button-type="Link" size="Small" icon="reply" text="@_l["Reply"].Value"/>
               }
-              <abp-button class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value"/>
+              <abp-button class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value" disabled="true"/>
               @if (subComment.CanEditComment)
               {
-                <abp-button class="text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
+                <abp-button class="btn-edit text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
               }
               @if (subComment.CanDeleteComment)
               {

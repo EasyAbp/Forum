@@ -36,8 +36,8 @@
             <div class="card-text mb-auto">@Model.Post.Content.Text</div>
             <div class="post-action mt-2 d-flex justify-content-between">
               <div class="post-action-left">
-                <abp-button class="text-secondary" button-type="Link" size="Small" icon="commenting" text="@_l.GetString("PostCommentCount", Model.PagerModel.TotalItemsCount).Value" />
-                <abp-button class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value"/>
+                <abp-button class="btn-comments text-secondary" button-type="Link" size="Small" icon="commenting" text="@_l.GetString("PostCommentCount", Model.PagerModel.TotalItemsCount).Value" />
+                <abp-button class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value" disabled="true"/>
                 @if (await Model.CanEditPostAsync())
                 {
                   <abp-button class="text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
@@ -69,7 +69,7 @@
 }
 
 <div class="container">
-  <div data-post-id="@Model.PostId" class="comments my-3 p-3 bg-white rounded shadow-sm">
+  <div data-post-id="@Model.PostId" id="comments" class="comments my-3 p-3 bg-white rounded shadow-sm">
     @if (!Model.Comments.Any())
     {
       <p class="mt-3 text-center text-secondary">@_l["NoComments"]</p>
@@ -90,16 +90,16 @@
             <div class="comment-action-left">
               @if (await Model.CanCreateCommentAsync())
               {
-                <abp-button data-comment-id="@comment.Id" class="primary-btn-reply text-secondary" button-type="Link" size="Small" icon="reply" text="@_l["Reply"].Value"/>
+                <abp-button class="primary-btn-reply text-secondary" button-type="Link" size="Small" icon="reply" text="@_l["Reply"].Value"/>
               }
-              <abp-button data-comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value"/>
+              <abp-button class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value" disabled="true"/>
               @if (await Model.CanEditCommentAsync(comment))
               {
-                <abp-button data-comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
+                <abp-button class="primary-btn-edit text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
               }
               @if (await Model.CanDeleteCommentAsync(comment))
               {
-                <abp-button data-comment-id="@comment.Id" class="text-secondary" button-type="Link" size="Small" icon="trash" text="@_l["Delete"].Value"/>
+                <abp-button class="text-secondary" button-type="Link" size="Small" icon="trash" text="@_l["Delete"].Value"/>
               }
             </div>
           </div>

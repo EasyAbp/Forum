@@ -3,6 +3,8 @@ using EasyAbp.Forum.Web.Pages.Forum.Management.Communities.Community.ViewModels;
 using EasyAbp.Forum.Posts.Dtos;
 using EasyAbp.Forum.Web.Pages.Forum.Post.ViewModels;
 using AutoMapper;
+using EasyAbp.Forum.Comments.Dtos;
+using EasyAbp.Forum.Web.Pages.Forum.Comment.ViewModels;
 using Volo.Abp.AutoMapper;
 
 namespace EasyAbp.Forum.Web
@@ -21,6 +23,8 @@ namespace EasyAbp.Forum.Web
             CreateMap<EditPostViewModel, UpdatePostDto>().Ignore(x => x.ExtraProperties);
             CreateMap<PostContentDto, CreateEditPostContentViewModel>();
             CreateMap<CreateEditPostContentViewModel, CreateUpdatePostContentDto>();
+            CreateMap<CommentDto, EditCommentViewModel>();
+            CreateMap<EditCommentViewModel, UpdateCommentDto>().Ignore(x => x.ExtraProperties);
         }
     }
 }

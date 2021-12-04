@@ -1,5 +1,7 @@
 (function ($) {
 
+    var editCommentModal = new abp.ModalManager(abp.appPath + 'Forum/Comment/EditModal');
+
     abp.widgets.ForumSubCommentsWidget = function ($widget) {
         var widgetManager = $widget.data('abp-widget-manager');
         var $subCommentsArea = $widget.find('.sub-comments-area');
@@ -33,6 +35,23 @@
                 });
             });
         }
+
+        function registerClickOfEditBtn() {
+            var commentId = $subCommentsArea.data('comment-id');
+            
+            $widget.find('.sub-comment').each(function () {
+                var subComment = $(this);
+                subComment.find('.btn-edit').click(function () {
+                    editCommentModal.open({ id: subComment.data('comment-id') });
+                });
+            });
+
+            editCommentModal.onResult(function (e, result) {
+                if (commentId && commentId === JSON.parse(result.responseText).parentId) {
+                    widgetManager.refresh($widget);
+                }
+            });
+        }
         
         function registerClickOfSubmitBtn() {
             var postId = $subCommentsArea.data("post-id");
@@ -57,6 +76,7 @@
         function init() {
             registerClickOfReplyBtn();
             registerClickOfSubmitBtn();
+            registerClickOfEditBtn();
         }
 
         return {
