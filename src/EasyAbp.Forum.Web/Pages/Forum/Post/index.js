@@ -1,12 +1,36 @@
 (function ($) {
 
     var l = abp.localization.getResource('EasyAbpForum');
-    var service = easyAbp.forum.comments.comment;
+    var postService = easyAbp.forum.posts.post;
+    var commentService = easyAbp.forum.comments.comment;
+    var editPostModal = new abp.ModalManager(abp.appPath + 'Forum/Post/EditModal');
     var editCommentModal = new abp.ModalManager(abp.appPath + 'Forum/Comment/EditModal');
 
     var postId = $('.comments').data("post-id");
 
+    function registerClickOfEditPostBtn() {
+        $('#EditPostButton').click(function () {
+            editPostModal.open({ id: postId });
+        });
+    }
 
+    function registerClickOfDeletePostBtn() {
+        $('#DeletePostButton').click(function (e) {
+            e.preventDefault();
+            abp.message.confirm(
+                l('PostDeletionConfirmationMessage', ''),
+                l('AreYouSure')
+            ).then(function (confirmed) {
+                if (confirmed) {
+                    postService.delete(postId)
+                        .then(function () {
+                            abp.notify.info(l('SuccessfullyDeleted'));
+                        });
+                }
+            });
+        });
+    }
+    
     function registerClickOfCommentsBtn() {
         $('.btn-comments').click(function () {
             document.getElementById('comments').scrollIntoView();
@@ -16,7 +40,7 @@
     function registerClickOfReplyBtn() {
         $('.comment').each(function () {
             var comment = $(this);
-            comment.find('.primary-btn-reply').click(function () {
+            comment.find('.primary-btn-reply-comment').click(function () {
                 var createCommentArea = comment.find(".primary-create-sub-comment");
                 if (createCommentArea.is(":hidden")) {
                     $('.create-sub-comment').hide();
@@ -31,7 +55,7 @@
     function registerClickOfEditCommentBtn() {
         $('.comment').each(function () {
             var comment = $(this);
-            comment.find('.primary-btn-edit').click(function () {
+            comment.find('.primary-btn-edit-comment').click(function () {
                 editCommentModal.open({ id: comment.data('comment-id') });
             });
         });
@@ -42,7 +66,7 @@
             var comment = $(this);
             comment.find('.primary-create-sub-comment-submit-btn').click(function () {
                 var textElement = comment.find('.primary-create-sub-comment-text');
-                service.create({
+                commentService.create({
                     parentId: comment.data("comment-id"),
                     postId: postId,
                     text: textElement.val()
@@ -60,14 +84,14 @@
     function registerClickOfDeleteCommentBtn() {
         $('.comment').each(function () {
             var comment = $(this);
-            comment.find('.primary-btn-delete').click(function (e) {
+            comment.find('.primary-btn-delete-comment').click(function (e) {
                 e.preventDefault();
                 abp.message.confirm(
                     l('CommentDeletionConfirmationMessage', ''),
                     l('AreYouSure')
                 ).then(function (confirmed) {
                     if (confirmed) {
-                        service.delete(comment.data('comment-id'))
+                        commentService.delete(comment.data('comment-id'))
                             .then(function () {
                                 document.location.href = document.location.origin + document.location.pathname;
                             });
@@ -78,6 +102,8 @@
     }
 
     function init() {
+        registerClickOfEditPostBtn();
+        registerClickOfDeletePostBtn();
         registerClickOfCommentsBtn();
         registerClickOfReplyBtn();
         registerClickOfSubmitBtn();
@@ -88,6 +114,10 @@
     $('.create-comment-form').on('abp-ajax-success', function (e, result) {
         $(this).hide();
         document.location.href = document.location.origin + document.location.pathname + '?pinnedCommentId=' + JSON.parse(result.responseText).id;
+    });
+
+    editPostModal.onResult(function () {
+        window.location.reload();
     });
 
     editCommentModal.onResult(function () {

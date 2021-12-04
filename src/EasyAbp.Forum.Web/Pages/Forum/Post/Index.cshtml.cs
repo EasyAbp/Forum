@@ -89,9 +89,16 @@ namespace EasyAbp.Forum.Web.Pages.Forum.Post
             
             if (PinnedCommentId.HasValue)
             {
-                var pinnedComment = await _commentAppService.GetAsync(PinnedCommentId.Value);
-                Comments.RemoveAll(x => x.Id == pinnedComment.Id);
-                Comments.AddFirst(pinnedComment);
+                try
+                {
+                    var pinnedComment = await _commentAppService.GetAsync(PinnedCommentId.Value);
+                    Comments.RemoveAll(x => x.Id == pinnedComment.Id);
+                    Comments.AddFirst(pinnedComment);
+                }
+                catch
+                {
+                    // ignored
+                }
             }
 
             var communityAppService = LazyServiceProvider.LazyGetRequiredService<ICommunityAppService>();

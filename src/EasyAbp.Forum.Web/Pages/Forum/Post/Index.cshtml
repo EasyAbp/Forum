@@ -40,11 +40,11 @@
                 <abp-button class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value" disabled="true"/>
                 @if (await Model.CanEditPostAsync())
                 {
-                  <abp-button class="text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
+                  <abp-button id="EditPostButton" class="text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
                 }
                 @if (await Model.CanDeletePostAsync())
                 {
-                  <abp-button class="text-secondary" button-type="Link" size="Small" icon="trash" text="@_l["Delete"].Value"/>
+                  <abp-button id="DeletePostButton" class="text-secondary" button-type="Link" size="Small" icon="trash" text="@_l["Delete"].Value"/>
                 }
               </div>
             </div>
@@ -90,16 +90,16 @@
             <div class="comment-action-left">
               @if (await Model.CanCreateCommentAsync())
               {
-                <abp-button class="primary-btn-reply text-secondary" button-type="Link" size="Small" icon="reply" text="@_l["Reply"].Value"/>
+                <abp-button class="primary-btn-reply-comment text-secondary" button-type="Link" size="Small" icon="reply" text="@_l["Reply"].Value"/>
               }
               <abp-button class="text-secondary" button-type="Link" size="Small" icon="share" text="@_l["Share"].Value" disabled="true"/>
               @if (await Model.CanEditCommentAsync(comment))
               {
-                <abp-button class="primary-btn-edit text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
+                <abp-button class="primary-btn-edit-comment text-secondary" button-type="Link" size="Small" icon="pencil" text="@_l["Edit"].Value"/>
               }
               @if (await Model.CanDeleteCommentAsync(comment))
               {
-                <abp-button class="primary-btn-delete text-secondary" button-type="Link" size="Small" icon="trash" text="@_l["Delete"].Value"/>
+                <abp-button class="primary-btn-delete-comment text-secondary" button-type="Link" size="Small" icon="trash" text="@_l["Delete"].Value"/>
               }
             </div>
           </div>
