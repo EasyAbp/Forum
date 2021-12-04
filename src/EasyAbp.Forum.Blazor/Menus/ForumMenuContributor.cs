@@ -25,26 +25,15 @@ namespace EasyAbp.Forum.Blazor.Menus
             var forum = context.Menu.AddItem(new ApplicationMenuItem(ForumMenus.Prefix,
                 l["Menu:Forum"], "~/Forum"));
             
-            var forumManagement = new ApplicationMenuItem(ForumMenus.Prefix,
+            var forumManagement = new ApplicationMenuItem(ForumMenus.ManagementPrefix,
                 l["Menu:ForumManagement"]);
 
             if (await context.IsGrantedAsync(ForumPermissions.Community.Default))
             {
-                forumManagement.AddItem(
-                    new ApplicationMenuItem(ForumMenus.Community, l["Menu:Community"], "/Forum/Management/Communities/Community")
-                );
-            }
-            if (await context.IsGrantedAsync(ForumPermissions.Post.Manage))
-            {
-                forumManagement.AddItem(
-                    new ApplicationMenuItem(ForumMenus.Post, l["Menu:Post"], "/Forum/Management/Posts/Post")
-                );
-            }
-            if (await context.IsGrantedAsync(ForumPermissions.Comment.Manage))
-            {
-                forumManagement.AddItem(
-                    new ApplicationMenuItem(ForumMenus.Comment, l["Menu:Comment"], "/Forum/Management/Comments/Comment")
-                );
+                forumManagement.AddItem(new ApplicationMenuItem(
+                    ForumMenus.ManagementCommunity,
+                    l["Menu:Community"],
+                    "/Forum/Management/Communities/Community"));
             }
 
             if (forumManagement.Items.Any())
