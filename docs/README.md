@@ -7,8 +7,6 @@
 
 An abp forum application module.
 
-![demo.gif](/docs/images/demo.gif)
-
 ## Online Demo
 
 We have launched an online demo for this module: [https://forum.samples.easyabp.io](https://forum.samples.easyabp.io)
