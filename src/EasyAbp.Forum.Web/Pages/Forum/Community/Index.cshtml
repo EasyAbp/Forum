@@ -46,8 +46,8 @@
               <strong class="d-inline-block mb-2 text-primary">@_l["PinnedPost"]</strong>
               <h3 class="mb-0">@post.Title</h3>
               <div class="mb-1 text-muted">@_l.GetString("PostedBy", post.CreatorUserName ?? _l["Anonymous"]) <time class="timeago" datetime="@post.CreationTime">@post.CreationTime</time></div>
-              <p class="card-text mb-auto">@(post.Outline[..(post.Outline.Length < 100 ? post.Outline.Length : 100)] + "...")</p>
-              <a asp-page="/Forum/Post/Index" asp-all-route-data="@(new Dictionary<string, string> {{"id", post.Id.ToString()}})" class="stretched-link">Continue reading</a>
+              <p class="card-text mb-auto">@(post.Outline[..(post.Outline.Length < 100 ? post.Outline.Length : 100)])</p>
+              <a asp-page="/Forum/Post/Index" asp-all-route-data="@(new Dictionary<string, string> {{"id", post.Id.ToString()}})" class="stretched-link">@_l["ContinueReading"]</a>
             </div>
             <div class="col-auto d-none d-lg-block">
               <svg class="post-thumbnail" width="200" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
