@@ -17,9 +17,9 @@ jobs:
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: "\]\((/docs/)"
-          replace: "](/modules/${{ github.event.repository.name }}/"
-          include: "docs/**"
+          find: \]\((/docs/)
+          replace: ](/modules/${{ github.event.repository.name }}/
+          include: docs/**
 
       - name: Pull repo and change files
         id: change
