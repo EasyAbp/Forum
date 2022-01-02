@@ -66,7 +66,7 @@ namespace EasyAbp.Forum
             {
                 httpClient.SetBearerToken(accessToken);
 
-                var url = _configuration["RemoteServices:Forum:BaseUrl"] +
+                var url = _configuration["RemoteServices:EasyAbpForum:BaseUrl"] +
                           "api/Forum/sample/authorized";
 
                 var responseMessage = await httpClient.GetAsync(url);
@@ -127,7 +127,7 @@ namespace EasyAbp.Forum
             {
                 httpClient.SetBearerToken(tokenResponse.AccessToken);
 
-                var url = _configuration["RemoteServices:Forum:BaseUrl"] +
+                var url = _configuration["RemoteServices:EasyAbpForum:BaseUrl"] +
                           "api/Forum/sample/authorized";
 
                 var responseMessage = await httpClient.GetAsync(url);

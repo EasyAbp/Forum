@@ -2,6 +2,15 @@
     color: inherit;
 }
 
-.community:last-child .media-body {
+a {
+    text-decoration-line: none;
+}
+
+.community:last-child .community-content {
     border: none !important;
+    padding-bottom: 0 !important;
+}
+
+.bd-placeholder-img {
+    margin-right: 12px;
 }

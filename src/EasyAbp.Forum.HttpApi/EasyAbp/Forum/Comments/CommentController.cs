@@ -8,7 +8,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace EasyAbp.Forum.Comments
 {
-    [RemoteService(Name = "EasyAbpForum")]
+    [RemoteService(Name = ForumRemoteServiceConsts.RemoteServiceName)]
     [Route("/api/forum/comment")]
     public class CommentController : ForumController, ICommentAppService
     {

@@ -10,14 +10,14 @@ namespace EasyAbp.Forum.Web.Controllers
     {
         [HttpGet]
         [Route("forum-sub-comments")]
-        public virtual async Task<IActionResult> ForumSubCommentsAsync(Guid postId, Guid commentId, bool hasChildren)
+        public virtual Task<IActionResult> ForumSubCommentsAsync(Guid postId, Guid commentId, bool hasChildren)
         {
-            return ViewComponent("ForumSubCommentsWidget", new
+            return Task.FromResult<IActionResult>(ViewComponent("ForumSubCommentsWidget", new
             {
                 postId = postId,
                 commentId = commentId,
                 hasChildren = hasChildren
-            });
+            }));
         }
     }
 }

@@ -8,7 +8,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace EasyAbp.Forum.Posts
 {
-    [RemoteService(Name = "EasyAbpForum")]
+    [RemoteService(Name = ForumRemoteServiceConsts.RemoteServiceName)]
     [Route("/api/forum/post")]
     public class PostController : ForumController, IPostAppService
     {

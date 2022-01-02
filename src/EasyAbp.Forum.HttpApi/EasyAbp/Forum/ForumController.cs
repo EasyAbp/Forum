@@ -1,9 +1,11 @@
 ﻿using EasyAbp.Forum.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc;
 
 namespace EasyAbp.Forum
 {
-    public abstract class ForumController : AbpController
+    [Area(ForumRemoteServiceConsts.ModuleName)]
+    public abstract class ForumController : AbpControllerBase
     {
         protected ForumController()
         {

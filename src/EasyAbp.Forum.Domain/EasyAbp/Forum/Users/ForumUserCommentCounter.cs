@@ -9,8 +9,8 @@ namespace EasyAbp.Forum.Users
 {
     [UnitOfWork]
     public class ForumUserCommentCounter :
-        ILocalEventHandler<EntityCreatingEventData<Comment>>,
-        ILocalEventHandler<EntityDeletingEventData<Comment>>,
+        ILocalEventHandler<EntityCreatedEventData<Comment>>,
+        ILocalEventHandler<EntityDeletedEventData<Comment>>,
         ITransientDependency
     {
         private readonly IForumUserLookupService _forumUserLookupService;
@@ -24,7 +24,7 @@ namespace EasyAbp.Forum.Users
             _forumUserRepository = forumUserRepository;
         }
         
-        public virtual async Task HandleEventAsync(EntityCreatingEventData<Comment> eventData)
+        public virtual async Task HandleEventAsync(EntityCreatedEventData<Comment> eventData)
         {
             if (!eventData.Entity.CreatorId.HasValue)
             {
@@ -38,7 +38,7 @@ namespace EasyAbp.Forum.Users
             await _forumUserRepository.UpdateAsync(forumUser, true);
         }
 
-        public virtual async Task HandleEventAsync(EntityDeletingEventData<Comment> eventData)
+        public virtual async Task HandleEventAsync(EntityDeletedEventData<Comment> eventData)
         {
             if (!eventData.Entity.CreatorId.HasValue)
             {

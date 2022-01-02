@@ -40,27 +40,30 @@
     <div class="pinned-posts row mb-2">
       @foreach (var post in Model.PinnedPosts)
       {
-        <div class="pinned-post col-md-6">
-          <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 h-100 shadow-sm position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-              <strong class="d-inline-block mb-2 text-primary">@_l["PinnedPost"]</strong>
-              <h3 class="mb-0">@post.Title</h3>
-              <div class="mb-1 text-muted">@_l.GetString("PostedBy", post.CreatorUserName ?? _l["Anonymous"]) <time class="timeago" datetime="@post.CreationTime">@post.CreationTime</time></div>
-              <p class="card-text mb-auto">@(post.Outline[..(post.Outline.Length < 100 ? post.Outline.Length : 100)])</p>
-              <a asp-page="/Forum/Post/Index" asp-all-route-data="@(new Dictionary<string, string> {{"id", post.Id.ToString()}})" class="stretched-link">@_l["ContinueReading"]</a>
-            </div>
-            <div class="col-auto d-none d-lg-block">
-              <svg class="post-thumbnail" width="200" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-                <rect width="100%" height="100%" fill="#55595c"/>
-                <image class="post-thumbnail-img" href="/EasyAbp/Forum/images/post-thumbnail-placeholder.png" height="100" width="100" x="-20" y="100"></image>
-              </svg>
+        <div class="col-sm-6 mb-3">
+          <div class="card h-100">
+            <div class="row g-0 h-100">
+              <div class="col-md-4">
+                <svg class="post-thumbnail rounded-start" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                  <rect width="100%" height="100%" fill="#55595c"/>
+                  <image class="post-thumbnail-img" href="/EasyAbp/Forum/images/post-thumbnail-placeholder.png" height="100" width="100" x="-25" y="90"></image>
+                </svg>
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">@post.Title</h5>
+                  <p class="card-text">@(post.Outline[..(post.Outline.Length < 100 ? post.Outline.Length : 100)])</p>
+                  <p class="card-text"><small class="text-muted">@_l.GetString("PostedBy", post.CreatorUserName ?? _l["Anonymous"]) <time class="timeago" datetime="@post.CreationTime">@post.CreationTime</time></small></p>
+                  <a asp-page="/Forum/Post/Index" asp-all-route-data="@(new Dictionary<string, string> {{"id", post.Id.ToString()}})" class="stretched-link">@_l["ContinueReading"]</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       }
     </div>
   }
-  <div class="post-nav my-3 p-3 bg-white rounded shadow-sm d-flex justify-content-between">
+  <div class="post-nav my-3 mt-0 p-3 bg-white rounded shadow-sm d-flex justify-content-between">
     <div class="post-filter">
       <abp-button class="text-primary" button-type="Link" icon="certificate" text="@_l["NewPosts"].Value" />
       <abp-button class="text-secondary" button-type="Link" icon="fire" text="@_l["HotPosts"].Value" />
@@ -84,10 +87,9 @@
     @foreach (var (post, i) in Model.Posts.Select((post, i) => ( post, i )))
     {
       var color = colors[i % colors.Count];
-      <div class="post media text-muted pt-3 position-relative">
+      <div class="post d-flex text-muted pt-3 position-relative flex-shrink-0">
         <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="@color"/></svg>
-
-        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+        <div class="post-content pb-3 mb-0 small lh-125 border-bottom border-gray w-100">
           <div class="w-100 mb-1">
             @_l.GetString("PostedBy", post.CreatorUserName ?? _l["Anonymous"])
             <time class="timeago" datetime="@post.CreationTime">@post.CreationTime</time>

@@ -8,7 +8,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace EasyAbp.Forum.Communities
 {
-    [RemoteService(Name = "EasyAbpForum")]
+    [RemoteService(Name = ForumRemoteServiceConsts.RemoteServiceName)]
     [Route("/api/forum/community")]
     public class CommunityController : ForumController, ICommunityAppService
     {

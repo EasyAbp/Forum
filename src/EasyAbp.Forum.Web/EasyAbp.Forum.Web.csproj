@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
     <IsPackable>true</IsPackable>
     <OutputType>Library</OutputType>
@@ -17,15 +17,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EasyAbp.Forum.HttpApi\EasyAbp.Forum.HttpApi.csproj" />
+    <ProjectReference Include="..\EasyAbp.Forum.Application.Contracts\EasyAbp.Forum.Application.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.*" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\EasyAbp\Forum\images\stranded_pending.png" />
     <EmbeddedResource Include="Pages\**\*.css" />
     <EmbeddedResource Include="Pages\**\*.js" />
     <EmbeddedResource Include="Components\**\*.js" />
@@ -41,18 +40,6 @@
   <ItemGroup>
     <Folder Include="Pages\Forum\Management" />
     <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\Forum\Comments\Comment\CreateModal.cshtml" />
-    <_ContentIncludedByDefault Remove="Pages\Forum\Comments\Comment\EditModal.cshtml" />
-    <_ContentIncludedByDefault Remove="Pages\Forum\Comments\Comment\Index.cshtml" />
-    <_ContentIncludedByDefault Remove="Pages\Forum\Communities\Community\CreateModal.cshtml" />
-    <_ContentIncludedByDefault Remove="Pages\Forum\Communities\Community\EditModal.cshtml" />
-    <_ContentIncludedByDefault Remove="Pages\Forum\Communities\Community\Index.cshtml" />
-    <_ContentIncludedByDefault Remove="Components\ForumSubCommentsWidget\Default.cshtml" />
-    <_ContentIncludedByDefault Remove="Pages\Forum\Management\Posts\Post\Index.cshtml" />
-    <_ContentIncludedByDefault Remove="Pages\Forum\Management\Comments\Comment\Index.cshtml" />
   </ItemGroup>
 
 </Project>

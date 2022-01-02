@@ -14,9 +14,9 @@
     @foreach (var (subComment, i) in Model.SubComments.Select((subComment, i) => (subComment, i)))
     {
       var color = colors[i % colors.Count];
-      <div data-comment-id="@subComment.Comment.Id" data-creator-username="@subComment.Comment.CreatorUserName" class="sub-comment media text-muted pt-3">
+      <div data-comment-id="@subComment.Comment.Id" data-creator-username="@subComment.Comment.CreatorUserName" class="sub-comment d-flex text-muted pt-3">
         <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="@color"/></svg>
-        <div class="media-body pb-2 mb-0 small lh-125 border-bottom border-gray">
+        <div class="comment-content pb-2 mb-0 small lh-125 border-bottom border-gray w-100">
           <div class="d-flex justify-content-between align-items-center w-100 mb-1">
             <strong class="text-gray-dark">@(subComment.Comment.CreatorUserName ?? _l["Anonymous"])</strong>
             <time class="timeago" datetime="@subComment.Comment.CreationTime">@subComment.Comment.CreationTime</time>
@@ -43,7 +43,7 @@
           {
             <div class="create-sub-comment border-top mt-3 pt-2" style="display: none">
               <label>@_l.GetString("CommentAs", Model.CurrentUserName ?? _l["Anonymous"])</label>
-              <textarea class="form-control create-sub-comment-text" placeholder="@_l["CreateCommentTextPlaceholder"]" rows="3"></textarea>
+              <textarea class="form-control create-sub-comment-text mt-2" placeholder="@_l["CreateCommentTextPlaceholder"]" rows="3"></textarea>
               <div class="mt-3 d-flex flex-row-reverse">
                 <abp-button class="create-sub-comment-submit-btn" button-type="Primary" size="Small" text="@_l["Submit"].Value" />
               </div>

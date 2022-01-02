@@ -13,7 +13,7 @@ using EasyAbp.Forum.Permissions;
 namespace EasyAbp.Forum.Web
 {
     [DependsOn(
-        typeof(ForumHttpApiModule),
+        typeof(ForumApplicationContractsModule),
         typeof(AbpAspNetCoreMvcUiThemeSharedModule),
         typeof(AbpAutoMapperModule)
         )]

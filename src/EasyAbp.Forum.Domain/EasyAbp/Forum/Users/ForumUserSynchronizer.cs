@@ -2,6 +2,7 @@
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Entities.Events.Distributed;
 using Volo.Abp.EventBus.Distributed;
+using Volo.Abp.Uow;
 using Volo.Abp.Users;
 
 namespace EasyAbp.Forum.Users
@@ -21,6 +22,7 @@ namespace EasyAbp.Forum.Users
             UserLookupService = userLookupService;
         }
 
+        [UnitOfWork]
         public async Task HandleEventAsync(EntityUpdatedEto<UserEto> eventData)
         {
             var user = await UserRepository.FindAsync(eventData.Entity.Id);

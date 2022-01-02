@@ -14,6 +14,19 @@
     transform: rotate(-30deg);
 }
 
-.post:last-child .media-body {
+.post:last-child .post-content {
     border: none !important;
+    padding-bottom: 0 !important;
+}
+
+.bd-placeholder-img {
+    margin-right: 12px;
+}
+
+a {
+    text-decoration-line: none;
+}
+
+.btn-link {
+    text-decoration-line: none !important;
 }

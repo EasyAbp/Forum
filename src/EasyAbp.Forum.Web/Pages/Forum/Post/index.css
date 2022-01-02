@@ -1,7 +1,19 @@
-.comment:last-child .media-body {
+.comment:last-child .comment-content {
     border: none !important;
 }
 
-.sub-comment:last-child .media-body {
+.sub-comment:last-child .comment-content {
     border: none !important;
+}
+
+.bd-placeholder-img {
+    margin-right: 12px;
+}
+
+a {
+    text-decoration-line: none;
+}
+
+.btn-link {
+    text-decoration-line: none !important;
 }

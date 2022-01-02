@@ -7,10 +7,9 @@ using Volo.Abp.Uow;
 
 namespace EasyAbp.Forum.Users
 {
-    [UnitOfWork]
     public class ForumUserPostCounter :
-        ILocalEventHandler<EntityCreatingEventData<Post>>,
-        ILocalEventHandler<EntityDeletingEventData<Post>>,
+        ILocalEventHandler<EntityCreatedEventData<Post>>,
+        ILocalEventHandler<EntityDeletedEventData<Post>>,
         ITransientDependency
     {
         private readonly IForumUserLookupService _forumUserLookupService;
@@ -24,7 +23,8 @@ namespace EasyAbp.Forum.Users
             _forumUserRepository = forumUserRepository;
         }
         
-        public virtual async Task HandleEventAsync(EntityCreatingEventData<Post> eventData)
+        [UnitOfWork]
+        public virtual async Task HandleEventAsync(EntityCreatedEventData<Post> eventData)
         {
             if (!eventData.Entity.CreatorId.HasValue)
             {
@@ -38,7 +38,8 @@ namespace EasyAbp.Forum.Users
             await _forumUserRepository.UpdateAsync(forumUser, true);
         }
 
-        public virtual async Task HandleEventAsync(EntityDeletingEventData<Post> eventData)
+        [UnitOfWork]
+        public virtual async Task HandleEventAsync(EntityDeletedEventData<Post> eventData)
         {
             if (!eventData.Entity.CreatorId.HasValue)
             {
