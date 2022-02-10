@@ -12,7 +12,7 @@ namespace EasyAbp.Forum.Communities
         ICommunityAppService
     {
         protected override string GetPolicyName { get; set; } = null;
-        protected override string GetListPolicyName { get; set; } = null;
+        // protected override string GetListPolicyName { get; set; } = null;
         protected override string CreatePolicyName { get; set; } = ForumPermissions.Community.Create;
         protected override string UpdatePolicyName { get; set; } = ForumPermissions.Community.Update;
         protected override string DeletePolicyName { get; set; } = ForumPermissions.Community.Delete;
@@ -72,7 +72,7 @@ namespace EasyAbp.Forum.Communities
 
         public virtual async Task<CommunityDto> GetByNameAsync(string name)
         {
-            await CheckGetPolicyAsync();
+           // await CheckGetPolicyAsync();
 
             var community = await _repository.GetAsync(x => x.Name == name);
 

@@ -88,8 +88,8 @@ namespace EasyAbp.Forum.Posts
 
         public override async Task<PagedResultDto<PostDto>> GetListAsync(GetPostListInput input)
         {
-            await AuthorizationService.CheckAsync(new PostOperationInfoModel {CommunityId = input.CommunityId},
-                new OperationAuthorizationRequirement {Name = ForumPermissions.Post.Default});
+            // await AuthorizationService.CheckAsync(new PostOperationInfoModel {CommunityId = input.CommunityId},
+            //     new OperationAuthorizationRequirement {Name = ForumPermissions.Post.Default});
 
             var query = await CreateFilteredQueryAsync(input);
 
