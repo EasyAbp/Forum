@@ -20,16 +20,8 @@ namespace EasyAbp.Forum
             CreateMap<PostContent, PostContentDto>();
             CreateMap<Post, PostDto>()
                 .Ignore(x => x.CreatorUserName);
-            CreateMap<PostWithCreatorInfo, PostDto>()
-                .ConstructUsing((src, ctx) => ctx.Mapper.Map<PostDto>(src.Post))
-                .ForMember(x => x.CreatorUserName, x => x.MapFrom(y => y.CreatorUserName))
-                .ForAllOtherMembers(o => o.Ignore());
             CreateMap<Comment, CommentDto>()
                 .Ignore(x => x.CreatorUserName);
-            CreateMap<CommentWithCreatorInfo, CommentDto>()
-                .ConstructUsing((src, ctx) => ctx.Mapper.Map<CommentDto>(src.Comment))
-                .ForMember(x => x.CreatorUserName, x => x.MapFrom(y => y.CreatorUserName))
-                .ForAllOtherMembers(o => o.Ignore());
         }
     }
 }

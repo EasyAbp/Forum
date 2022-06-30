@@ -67,6 +67,32 @@ namespace EasyAbp.Forum.Posts
             return dto;
         }
 
+        protected virtual Task<List<PostDto>> MapToGetOutputListDtoAsync(IEnumerable<PostWithCreatorInfo> infos)
+        {
+            if (infos is null)
+            {
+                return Task.FromResult(new List<PostDto>());
+            }
+            
+            return Task.FromResult(infos.Select(info => new PostDto
+            {
+                Id = info.Post.Id,
+                CreationTime = info.Post.CreationTime,
+                CreatorId = info.Post.CreatorId,
+                LastModificationTime = info.Post.LastModificationTime,
+                LastModifierId = info.Post.LastModifierId,
+                IsDeleted = info.Post.IsDeleted,
+                DeleterId = info.Post.DeleterId,
+                DeletionTime = info.Post.DeletionTime,
+                CommunityId = info.Post.CommunityId,
+                Title = info.Post.Title,
+                Outline = info.Post.Outline,
+                Thumbnail = info.Post.Thumbnail,
+                Pinned = info.Post.Pinned,
+                CreatorUserName = info.CreatorUserName
+            }).ToList());
+        }
+
         protected virtual PostOperationInfoModel CreatePostOperationInfoModel(Post post)
         {
             return new()
@@ -99,7 +125,7 @@ namespace EasyAbp.Forum.Posts
             query = ApplyPaging(query, input);
 
             var entities = await _repository.GetPostWithCreatorInfoListAsync(query);
-            var entityDtos = ObjectMapper.Map<List<PostWithCreatorInfo>, List<PostDto>>(entities);
+            var entityDtos = await MapToGetOutputListDtoAsync(entities);
 
             return new PagedResultDto<PostDto>(
                 totalCount,

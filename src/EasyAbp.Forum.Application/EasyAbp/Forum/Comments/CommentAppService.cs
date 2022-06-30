@@ -69,6 +69,31 @@ namespace EasyAbp.Forum.Comments
 
             return dto;
         }
+
+        protected virtual Task<List<CommentDto>> MapToGetOutputDtoListAsync(IEnumerable<CommentWithCreatorInfo> infos)
+        {
+            if (infos is null)
+            {
+                return Task.FromResult(new List<CommentDto>());
+            }
+            
+            return Task.FromResult(infos.Select(info => new CommentDto
+            {
+                Id = info.Comment.Id,
+                CreationTime = info.Comment.CreationTime,
+                CreatorId = info.Comment.CreatorId,
+                LastModificationTime = info.Comment.LastModificationTime,
+                LastModifierId = info.Comment.LastModifierId,
+                IsDeleted = info.Comment.IsDeleted,
+                DeleterId = info.Comment.DeleterId,
+                DeletionTime = info.Comment.DeletionTime,
+                ParentId = info.Comment.ParentId,
+                PostId = info.Comment.PostId,
+                Text = info.Comment.Text,
+                ChildrenCount = info.Comment.ChildrenCount,
+                CreatorUserName = info.CreatorUserName
+            }).ToList());
+        }
         
         protected virtual CommentOperationInfoModel CreateCommentOperationInfoModel(Comment comment, Guid communityId)
         {
@@ -108,7 +133,7 @@ namespace EasyAbp.Forum.Comments
             query = ApplyPaging(query, input);
 
             var entities = await _repository.GetCommentWithCreatorInfoListAsync(query);
-            var entityDtos = ObjectMapper.Map<List<CommentWithCreatorInfo>, List<CommentDto>>(entities);
+            var entityDtos = await MapToGetOutputDtoListAsync(entities);
 
             return new PagedResultDto<CommentDto>(
                 totalCount,
