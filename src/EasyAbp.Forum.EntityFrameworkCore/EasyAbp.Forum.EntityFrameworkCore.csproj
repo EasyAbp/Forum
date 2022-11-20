@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="$(AbpVersion)" />
-    <PackageReference Include="Volo.Abp.Users.EntityFrameworkCore" Version="4.4.3" />
+    <PackageReference Include="Volo.Abp.Users.EntityFrameworkCore" Version="$(AbpVersion)" />
     <ProjectReference Include="..\EasyAbp.Forum.Domain\EasyAbp.Forum.Domain.csproj" />
   </ItemGroup>
 

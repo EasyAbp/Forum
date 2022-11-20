@@ -18,6 +18,8 @@ namespace EasyAbp.Forum.Users
 
         public virtual string Surname { get; protected set; }
 
+        public virtual bool IsActive { get; protected set; }
+
         public virtual bool EmailConfirmed { get; protected set; }
 
         public virtual string PhoneNumber { get; protected set; }
@@ -25,9 +27,9 @@ namespace EasyAbp.Forum.Users
         public virtual bool PhoneNumberConfirmed { get; protected set; }
 
         #endregion
-        
+
         public virtual int PostCount { get; protected set; }
-        
+
         public virtual int CommentCount { get; protected set; }
 
         protected ForumUser()
@@ -37,10 +39,10 @@ namespace EasyAbp.Forum.Users
         public ForumUser(IUserData user) : base(user.Id)
         {
             TenantId = user.TenantId;
-            
+
             UpdateInternal(user);
         }
-        
+
         public virtual bool Update(IUserData user)
         {
             if (Id != user.Id)
@@ -50,7 +52,8 @@ namespace EasyAbp.Forum.Users
 
             if (TenantId != user.TenantId)
             {
-                throw new ArgumentException($"Given User's TenantId '{user.TenantId}' does not match to this User's TenantId '{TenantId}'");
+                throw new ArgumentException(
+                    $"Given User's TenantId '{user.TenantId}' does not match to this User's TenantId '{TenantId}'");
             }
 
             if (Equals(user))
@@ -61,7 +64,7 @@ namespace EasyAbp.Forum.Users
             UpdateInternal(user);
             return true;
         }
-        
+
         protected virtual bool Equals(IUserData user)
         {
             return Id == user.Id &&
@@ -69,6 +72,7 @@ namespace EasyAbp.Forum.Users
                    UserName == user.UserName &&
                    Name == user.Name &&
                    Surname == user.Surname &&
+                   IsActive == user.IsActive &&
                    Email == user.Email &&
                    EmailConfirmed == user.EmailConfirmed &&
                    PhoneNumber == user.PhoneNumber &&
@@ -80,6 +84,7 @@ namespace EasyAbp.Forum.Users
             Email = user.Email;
             Name = user.Name;
             Surname = user.Surname;
+            IsActive = user.IsActive;
             EmailConfirmed = user.EmailConfirmed;
             PhoneNumber = user.PhoneNumber;
             PhoneNumberConfirmed = user.PhoneNumberConfirmed;

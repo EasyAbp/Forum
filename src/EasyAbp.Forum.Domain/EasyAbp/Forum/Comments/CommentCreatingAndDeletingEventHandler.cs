@@ -8,8 +8,8 @@ namespace EasyAbp.Forum.Comments
 {
     [UnitOfWork(true)]
     public class CommentCreatingAndDeletingEventHandler :
-        ILocalEventHandler<EntityCreatingEventData<Comment>>,
-        ILocalEventHandler<EntityDeletingEventData<Comment>>,
+        ILocalEventHandler<EntityCreatedEventData<Comment>>,
+        ILocalEventHandler<EntityDeletedEventData<Comment>>,
         ITransientDependency
     {
         private readonly ICommentRepository _commentRepository;
@@ -19,7 +19,7 @@ namespace EasyAbp.Forum.Comments
             _commentRepository = commentRepository;
         }
 
-        public virtual async Task HandleEventAsync(EntityCreatingEventData<Comment> eventData)
+        public virtual async Task HandleEventAsync(EntityCreatedEventData<Comment> eventData)
         {
             if (!eventData.Entity.ParentId.HasValue)
             {
@@ -33,7 +33,7 @@ namespace EasyAbp.Forum.Comments
             await _commentRepository.UpdateAsync(parent, true);
         }
 
-        public virtual async Task HandleEventAsync(EntityDeletingEventData<Comment> eventData)
+        public virtual async Task HandleEventAsync(EntityDeletedEventData<Comment> eventData)
         {
             if (!eventData.Entity.ParentId.HasValue)
             {
