@@ -2,20 +2,20 @@
 # yarn lockfile v1
 
 
-"@abp/aspnetcore.components.server.leptonxlitetheme@~1.0.0":
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/@abp/aspnetcore.components.server.leptonxlitetheme/-/aspnetcore.components.server.leptonxlitetheme-1.0.0.tgz#4596962196b093d88eb9cd29bff07a295b7e6b79"
-  integrity sha512-6EvvXE3JaefsGUEOBr60T9V19lE1r6Y0S9Lkud1GS0GQzhIHKqff7XsU0e5UlQpo+NODfCPaIsKHEzpvvJtuiQ==
+"@abp/aspnetcore.components.server.leptonxlitetheme@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmmirror.com/@abp/aspnetcore.components.server.leptonxlitetheme/-/aspnetcore.components.server.leptonxlitetheme-2.0.0.tgz#3ba1031cf748cc4051346525ac5312c3488f22df"
+  integrity sha512-PFzcy54/qFz/iGKktDjqhYnepayy2DQBCEV9MSNZRusaWNZiwyFdKtozQ0zme96qTmvxn9lk4Am3YY8h/S8jhw==
   dependencies:
-    "@abp/aspnetcore.components.server.theming" "~6.0.0"
+    "@abp/aspnetcore.components.server.theming" "~7.0.0"
 
-"@abp/aspnetcore.components.server.theming@~6.0.0":
-  version "6.0.1"
-  resolved "https://registry.npmjs.org/@abp/aspnetcore.components.server.theming/-/aspnetcore.components.server.theming-6.0.1.tgz#c2315133c7c3d83be3176ca37b4b2261ef8cee89"
-  integrity sha512-z5kEHURThsNXHpbbGmVgNgj19BrkO+nlnk5Y5QtXjL1YBQv0cVPFepVPggVtcT69RLd981c/RUnmzhfHy4vhNg==
+"@abp/aspnetcore.components.server.theming@~7.0.0":
+  version "7.0.1"
+  resolved "https://registry.npmmirror.com/@abp/aspnetcore.components.server.theming/-/aspnetcore.components.server.theming-7.0.1.tgz#2db99e59114d425f2a55faa68c23abb6c6d119f1"
+  integrity sha512-UoOlZWjuzXDVet8yKunKixmXdu6MmX3ywKM30vNn5c+k4JzpFIOCQkPJS9m6qhKs5PVzvq5uR5lpHIs4jR0xTg==
   dependencies:
-    "@abp/bootstrap" "~6.0.1"
-    "@abp/font-awesome" "~6.0.1"
+    "@abp/bootstrap" "~7.0.1"
+    "@abp/font-awesome" "~7.0.1"
 
 "@abp/aspnetcore.mvc.ui.theme.leptonxlite@2.0.0":
   version "2.0.0"
@@ -72,14 +72,6 @@
   dependencies:
     bootstrap-daterangepicker "^3.1.0"
 
-"@abp/bootstrap@~6.0.1":
-  version "6.0.1"
-  resolved "https://registry.npmjs.org/@abp/bootstrap/-/bootstrap-6.0.1.tgz#51abce4b2373c503fbffd9ea35d25e50e029eff0"
-  integrity sha512-HyAuTJFbP5VpGETsqrzNLWC23lh3zep13LaCeHIPpAj7yAlgNW33S6VQoghdWN3poFJdtO95XLXUQPd+J53sYQ==
-  dependencies:
-    "@abp/core" "~6.0.1"
-    bootstrap "^5.1.3"
-
 "@abp/bootstrap@~7.0.0":
   version "7.0.0"
   resolved "https://registry.npmmirror.com/@abp/bootstrap/-/bootstrap-7.0.0.tgz#f28bf80bf0422c726a563588ed07697d0c990ec9"
@@ -88,12 +80,13 @@
     "@abp/core" "~7.0.0"
     bootstrap "^5.1.3"
 
-"@abp/core@~6.0.1":
-  version "6.0.1"
-  resolved "https://registry.npmjs.org/@abp/core/-/core-6.0.1.tgz#3db3a006a6a8f39b06233d5faa40c3b44589b1b8"
-  integrity sha512-v9yoa1UhvOvDJ4rTPJ1V3rk21pJVDJmNBTJhU+2EaWYiZ02AUhizl4N2NSFcOEzyRC4hsdG2Apbc/uBKZT1O1g==
+"@abp/bootstrap@~7.0.1":
+  version "7.0.1"
+  resolved "https://registry.npmmirror.com/@abp/bootstrap/-/bootstrap-7.0.1.tgz#bfebc46e121565ee80818e00479968522b424787"
+  integrity sha512-ghGI3FqGcWZNkG1mjYqpcRLQMbiOj8AEi0NQ+ANM2FX1AfbQjU2yI50nrUcOFkZLVzCe9bzZZ+sU2P4T9g510g==
   dependencies:
-    "@abp/utils" "~6.0.1"
+    "@abp/core" "~7.0.1"
+    bootstrap "^5.1.3"
 
 "@abp/core@~7.0.0":
   version "7.0.0"
@@ -101,6 +94,13 @@
   integrity sha512-I9V+amo8a4eYlKeMV6fxb+2uvBLZkuJv78IRilmL6jOxg5F9mJuvPzg7XQugMnDQ9NZXErjDW04DyR/5OfeIiA==
   dependencies:
     "@abp/utils" "~7.0.0"
+
+"@abp/core@~7.0.1":
+  version "7.0.1"
+  resolved "https://registry.npmmirror.com/@abp/core/-/core-7.0.1.tgz#e1952c7172d3e9549c4f997082926eac0c42ceea"
+  integrity sha512-lTaeq40RMGYJun8FU2N9ovqjSYseCJGVqHdyhiWVI8Mba/qAkCmxwgKqGZeKGhImwxwLXva0P5r2vClp59Ymzw==
+  dependencies:
+    "@abp/utils" "~7.0.1"
 
 "@abp/datatables.net-bs5@~7.0.0":
   version "7.0.0"
@@ -118,20 +118,20 @@
     "@abp/jquery" "~7.0.0"
     datatables.net "^1.11.4"
 
-"@abp/font-awesome@~6.0.1":
-  version "6.0.1"
-  resolved "https://registry.npmjs.org/@abp/font-awesome/-/font-awesome-6.0.1.tgz#d8fc0ae0766725cb8e43b78c9583687a6d622f68"
-  integrity sha512-t962FZc/096dNtbJpQKPNzEYuntCRPb8vzGCUhe6cqvI9L6sS7NvWUbt4Q8U445dUIM92wnsZyp18q//K47qAQ==
-  dependencies:
-    "@abp/core" "~6.0.1"
-    "@fortawesome/fontawesome-free" "^5.15.4"
-
 "@abp/font-awesome@~7.0.0":
   version "7.0.0"
   resolved "https://registry.npmmirror.com/@abp/font-awesome/-/font-awesome-7.0.0.tgz#938f4e4cf3d46e0ec45fc60f568519f4df7221a3"
   integrity sha512-UXiO/y9yrguhvev8BmFEKzdek0wMC25IwppMOsVmxtv/SiCRUsHGIzyTVs1ZLuvlL94cuxxqfIHrQrat423/0g==
   dependencies:
     "@abp/core" "~7.0.0"
+    "@fortawesome/fontawesome-free" "^5.15.4"
+
+"@abp/font-awesome@~7.0.1":
+  version "7.0.1"
+  resolved "https://registry.npmmirror.com/@abp/font-awesome/-/font-awesome-7.0.1.tgz#7f86537620d0b214e0961b77658b6a2c180992ef"
+  integrity sha512-CgJHgxqDiY2190uI5scRF3VJlqG6rz8eW8fLzaHKCeMZvX6ktTSik1Q5XqaYDoH49vhTZOtHyvJhkpr/Rr2x7g==
+  dependencies:
+    "@abp/core" "~7.0.1"
     "@fortawesome/fontawesome-free" "^5.15.4"
 
 "@abp/jquery-form@~7.0.0":
@@ -229,17 +229,17 @@
     "@abp/jquery" "~7.0.0"
     toastr "^2.1.4"
 
-"@abp/utils@~6.0.1":
-  version "6.0.1"
-  resolved "https://registry.npmjs.org/@abp/utils/-/utils-6.0.1.tgz#bbb5354a329ba0a83b6268bca73575ff1d2109d7"
-  integrity sha512-gXbf5jqMLSAFIJ0szmLgCbAob9SXBkbPM8zwIPfBXJczkEbSvvu2CvEyacKzcElBpbPqHGovBfIHpxIano34UQ==
-  dependencies:
-    just-compare "^1.3.0"
-
 "@abp/utils@~7.0.0":
   version "7.0.0"
   resolved "https://registry.npmmirror.com/@abp/utils/-/utils-7.0.0.tgz#662645b8774b048ba5eb6f7971fa1f20b909ad96"
   integrity sha512-JLufGsUmZ8jUdZNteXXp/phYqVCiOHO6ymMyd2oUjVEnRh3wRtRs4snhN2MQruGa6KCbPHkjGhXiQTUo75IbaQ==
+  dependencies:
+    just-compare "^1.3.0"
+
+"@abp/utils@~7.0.1":
+  version "7.0.1"
+  resolved "https://registry.npmmirror.com/@abp/utils/-/utils-7.0.1.tgz#fa687f6f85e02763e3f7fd0743bd2326d86b3863"
+  integrity sha512-ruGndiJjtJBRbiBlzWaddJ8kkn+vOCcC26du29w0E2HLwvUjIba/Hz4AW4HEJqABoKO5J+yUSh+2htpfcBt8hg==
   dependencies:
     just-compare "^1.3.0"
 

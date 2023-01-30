@@ -4,6 +4,6 @@
   "private": true,
   "dependencies": {
     "@abp/aspnetcore.mvc.ui.theme.leptonxlite": "2.0.0",
-    "@abp/aspnetcore.components.server.leptonxlitetheme": "~1.0.0"
+    "@abp/aspnetcore.components.server.leptonxlitetheme": "2.0.0"
   }
 }
