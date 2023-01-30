@@ -18,7 +18,10 @@ namespace EasyAbp.Forum.Communities.Dtos
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            base.Validate(validationContext);
+            foreach (var result in base.Validate(validationContext))
+            {
+                yield return result;
+            }
 
             if (!Regex.IsMatch(Name, ForumConsts.Community.NameRegexRule))
             {
