@@ -10,18 +10,15 @@ namespace EasyAbp.Forum.Posts
 {
     public class BasicPostOperationAuthorizationHandler : PostOperationAuthorizationHandler, ISingletonDependency
     {
-        private readonly IPermissionChecker _permissionChecker;
-
-        public BasicPostOperationAuthorizationHandler(IPermissionChecker permissionChecker)
+        public BasicPostOperationAuthorizationHandler(IPermissionChecker permissionChecker) : base(permissionChecker)
         {
-            _permissionChecker = permissionChecker;
         }
 
         protected override async Task HandleGetAsync(AuthorizationHandlerContext context,
             OperationAuthorizationRequirement requirement, PostOperationInfoModel resource)
         {
-            await CheckPolicyAsync(ForumPermissions.Post.Default, context);
-            
+            await CheckPolicyAsync(null, context);
+
             context.Succeed(requirement);
         }
 
@@ -29,7 +26,7 @@ namespace EasyAbp.Forum.Posts
             OperationAuthorizationRequirement requirement, PostOperationInfoModel resource)
         {
             await CheckPolicyAsync(ForumPermissions.Post.Create, context);
-            
+
             context.Succeed(requirement);
         }
 
@@ -37,7 +34,7 @@ namespace EasyAbp.Forum.Posts
             OperationAuthorizationRequirement requirement, PostOperationInfoModel resource)
         {
             await CheckPolicyAsync(ForumPermissions.Post.Update, context);
-            
+
             if (resource.Post.CreatorId == context.User.Identity.FindUserId() || await IsUserManagerAsync())
             {
                 context.Succeed(requirement);
@@ -48,7 +45,7 @@ namespace EasyAbp.Forum.Posts
             OperationAuthorizationRequirement requirement, PostOperationInfoModel resource)
         {
             await CheckPolicyAsync(ForumPermissions.Post.Delete, context);
-            
+
             if (resource.Post.CreatorId == context.User.Identity.FindUserId() || await IsUserManagerAsync())
             {
                 context.Succeed(requirement);
@@ -59,21 +56,13 @@ namespace EasyAbp.Forum.Posts
             OperationAuthorizationRequirement requirement, PostOperationInfoModel resource)
         {
             await CheckPolicyAsync(ForumPermissions.Post.Pin, context);
-            
+
             context.Succeed(requirement);
-        }
-        
-        protected virtual async Task CheckPolicyAsync(string permissionName, AuthorizationHandlerContext context)
-        {
-            if (!await _permissionChecker.IsGrantedAsync(permissionName))
-            {
-                context.Fail();
-            }
         }
 
         protected virtual async Task<bool> IsUserManagerAsync()
         {
-            return await _permissionChecker.IsGrantedAsync(ForumPermissions.Post.Manage);
+            return await PermissionChecker.IsGrantedAsync(ForumPermissions.Post.Manage);
         }
     }
 }

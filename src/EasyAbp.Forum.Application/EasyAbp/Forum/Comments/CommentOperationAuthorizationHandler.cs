@@ -1,12 +1,19 @@
 ﻿using System.Threading.Tasks;
+using EasyAbp.Forum.Authorization;
 using EasyAbp.Forum.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Volo.Abp.Authorization.Permissions;
 
 namespace EasyAbp.Forum.Comments
 {
-    public abstract class CommentOperationAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, CommentOperationInfoModel>
+    public abstract class CommentOperationAuthorizationHandler :
+        ForumOperationAuthorizationHandler<CommentOperationInfoModel>
     {
+        public CommentOperationAuthorizationHandler(IPermissionChecker permissionChecker) : base(permissionChecker)
+        {
+        }
+
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
             OperationAuthorizationRequirement requirement, CommentOperationInfoModel resource)
         {

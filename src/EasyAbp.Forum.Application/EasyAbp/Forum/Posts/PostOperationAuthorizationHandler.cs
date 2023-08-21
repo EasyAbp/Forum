@@ -1,12 +1,18 @@
 ﻿using System.Threading.Tasks;
+using EasyAbp.Forum.Authorization;
 using EasyAbp.Forum.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Volo.Abp.Authorization.Permissions;
 
 namespace EasyAbp.Forum.Posts
 {
-    public abstract class PostOperationAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, PostOperationInfoModel>
+    public abstract class PostOperationAuthorizationHandler : ForumOperationAuthorizationHandler<PostOperationInfoModel>
     {
+        protected PostOperationAuthorizationHandler(IPermissionChecker permissionChecker) : base(permissionChecker)
+        {
+        }
+
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
             OperationAuthorizationRequirement requirement, PostOperationInfoModel resource)
         {
