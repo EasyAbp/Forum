@@ -23,10 +23,10 @@ namespace EasyAbp.Forum.Blazor.Menus
             //Add main menu items.
 
             var forum = context.Menu.AddItem(new ApplicationMenuItem(ForumMenus.Prefix,
-                l["Menu:Forum"], "~/Forum"));
+                l["Menu:Forum"], "~/Forum", icon: "fa fa-comments"));
             
             var forumManagement = new ApplicationMenuItem(ForumMenus.ManagementPrefix,
-                l["Menu:ForumManagement"]);
+                l["Menu:ForumManagement"], icon: "fa fa-comments");
 
             if (await context.IsGrantedAsync(ForumPermissions.Community.Default))
             {
@@ -38,7 +38,7 @@ namespace EasyAbp.Forum.Blazor.Menus
 
             if (forumManagement.Items.Any())
             {
-                context.Menu.AddItem(forumManagement);
+                context.Menu.GetAdministration().AddItem(forumManagement);
             }
         }
     }
