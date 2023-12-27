@@ -8,10 +8,6 @@
 
 An abp forum application module.
 
-## Online Demo
-
-We have launched an online demo for this module: [https://forum.samples.easyabp.io](https://forum.samples.easyabp.io)
-
 ## Installation
 
 1. Install the following NuGet packages. ([see how](https://github.com/EasyAbp/EasyAbpGuide/blob/master/docs/How-To.md#add-nuget-packages))
