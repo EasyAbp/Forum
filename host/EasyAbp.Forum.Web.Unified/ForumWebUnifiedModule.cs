@@ -149,7 +149,7 @@ namespace EasyAbp.Forum
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.MapAbpStaticAssets();
             app.UseRouting();
             app.UseAuthentication();
 
