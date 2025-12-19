@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Forum.Comments.Dtos;
+using EasyAbp.Forum.Localization;
 using EasyAbp.Forum.Permissions;
 using EasyAbp.Forum.Posts;
 using EasyAbp.Forum.Users;
@@ -29,6 +30,9 @@ namespace EasyAbp.Forum.Comments
             _forumUserLookupService = forumUserLookupService;
             _postRepository = postRepository;
             _repository = repository;
+
+            LocalizationResource = typeof(ForumResource);
+            ObjectMapperContext = typeof(ForumApplicationModule);
         }
 
         protected override async Task<IQueryable<Comment>> CreateFilteredQueryAsync(GetCommentListInput input)

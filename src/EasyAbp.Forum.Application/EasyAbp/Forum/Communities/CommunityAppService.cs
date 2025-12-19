@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Forum.Permissions;
 using EasyAbp.Forum.Communities.Dtos;
+using EasyAbp.Forum.Localization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
@@ -26,6 +27,9 @@ namespace EasyAbp.Forum.Communities
         {
             _communityManager = communityManager;
             _repository = repository;
+
+            LocalizationResource = typeof(ForumResource);
+            ObjectMapperContext = typeof(ForumApplicationModule);
         }
 
         protected override IQueryable<Community> ApplyDefaultSorting(IQueryable<Community> query)

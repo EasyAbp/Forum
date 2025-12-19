@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Forum.Communities;
+using EasyAbp.Forum.Localization;
 using EasyAbp.Forum.Permissions;
 using EasyAbp.Forum.Posts.Dtos;
 using EasyAbp.Forum.Users;
@@ -31,6 +32,9 @@ namespace EasyAbp.Forum.Posts
             _postOutlineGenerator = postOutlineGenerator;
             _communityRepository = communityRepository;
             _repository = repository;
+
+            LocalizationResource = typeof(ForumResource);
+            ObjectMapperContext = typeof(ForumApplicationModule);
         }
 
         protected override async Task<IQueryable<Post>> CreateFilteredQueryAsync(GetPostListInput input)
