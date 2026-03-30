@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using EasyAbp.Forum.EntityFrameworkCore;
 using EasyAbp.Forum.MultiTenancy;
 using EasyAbp.Forum.Web;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.Swagger;
 using Volo.Abp;
 using Volo.Abp.Account;
