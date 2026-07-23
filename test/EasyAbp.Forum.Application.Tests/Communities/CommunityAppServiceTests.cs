@@ -1,5 +1,7 @@
+using System;
+using EasyAbp.Forum.Communities.Dtos;
 using Shouldly;
-using System.Threading.Tasks;
+using Volo.Abp.ObjectMapping;
 using Xunit;
 
 namespace EasyAbp.Forum.Communities
@@ -7,22 +9,24 @@ namespace EasyAbp.Forum.Communities
     public class CommunityAppServiceTests : ForumApplicationTestBase
     {
         private readonly ICommunityAppService _communityAppService;
+        private readonly IObjectMapper<ForumApplicationModule> _objectMapper;
 
         public CommunityAppServiceTests()
         {
             _communityAppService = GetRequiredService<ICommunityAppService>();
+            _objectMapper = GetRequiredService<IObjectMapper<ForumApplicationModule>>();
         }
 
-        /*
         [Fact]
-        public async Task Test1()
+        public void Should_Map_Community_To_CommunityDto()
         {
-            // Arrange
+            var community = new Community(Guid.NewGuid(), null, "my-community", "My Community", "desc");
 
-            // Act
+            var dto = _objectMapper.Map<Community, CommunityDto>(community);
 
-            // Assert
+            dto.Name.ShouldBe("my-community");
+            dto.DisplayName.ShouldBe("My Community");
+            dto.Description.ShouldBe("desc");
         }
-        */
     }
 }
