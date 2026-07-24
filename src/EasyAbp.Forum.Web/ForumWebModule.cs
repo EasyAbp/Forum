@@ -4,7 +4,7 @@ using EasyAbp.Forum.Localization;
 using EasyAbp.Forum.Web.Menus;
 using Volo.Abp.AspNetCore.Mvc.Localization;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
-using Volo.Abp.AutoMapper;
+using Volo.Abp.Mapperly;
 using Volo.Abp.Modularity;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
@@ -15,7 +15,7 @@ namespace EasyAbp.Forum.Web
     [DependsOn(
         typeof(ForumApplicationContractsModule),
         typeof(AbpAspNetCoreMvcUiThemeSharedModule),
-        typeof(AbpAutoMapperModule)
+        typeof(AbpMapperlyModule)
         )]
     public class ForumWebModule : AbpModule
     {
@@ -44,11 +44,7 @@ namespace EasyAbp.Forum.Web
                 options.FileSets.AddEmbedded<ForumWebModule>();
             });
 
-            context.Services.AddAutoMapperObjectMapper<ForumWebModule>();
-            Configure<AbpAutoMapperOptions>(options =>
-            {
-                options.AddMaps<ForumWebModule>(validate: true);
-            });
+            context.Services.AddMapperlyObjectMapper<ForumWebModule>();
 
             Configure<RazorPagesOptions>(options =>
             {
